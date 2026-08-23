@@ -1,6 +1,8 @@
 <div align="center">
 
-  <img src="public/icon-white.png" alt="Introlic Emblem" width="72" height="72" />
+  <a href="https://introlic.in" target="_blank">
+    <img src="https://introlic.in/icon-white.png" alt="Introlic Emblem" width="68" height="68" style="background: #000; border-radius: 12px; padding: 6px;" />
+  </a>
 
   # INTROLIC
 
