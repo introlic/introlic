@@ -1,0 +1,76 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1781849826016,
+      "tag": "0000_careful_sebastian_shaw",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1781850672036,
+      "tag": "0001_free_synch",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1781851380960,
+      "tag": "0002_smart_starjammers",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1781860473447,
+      "tag": "0003_zippy_dagger",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1781871358064,
+      "tag": "0004_broken_frightful_four",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1781873835865,
+      "tag": "0005_overconfident_otto_octavius",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1782055597604,
+      "tag": "0006_jittery_vivisector",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1782121740265,
+      "tag": "0007_blog_research_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1782214302747,
+      "tag": "0008_outgoing_cyclops",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1782292768150,
+      "tag": "0009_famous_quasar",
+      "breakpoints": true
+    }
+  ]
+}

@@ -1,0 +1,218 @@
+"use client";
+
+import React from 'react';
+import { motion } from 'framer-motion';
+import { FlaskConical } from 'lucide-react';
+import { staggerContainer, staggerItem } from '@/constants/animations';
+import { COLORS } from '@/constants/branding';
+
+const principles = [
+  {
+    index: "01",
+    tag: "RESEARCH",
+    title: "Foundational Architecture",
+    text: "Investigating alternative architectures like Discrete Diffusion (SEDD) to overcome sequential generation limits and explore real-time self-correcting reasoning."
+  },
+  {
+    index: "02",
+    tag: "EFFICIENCY",
+    title: "Compute-Performance Optimization",
+    text: "Focusing on noise schedule optimizations and sample-efficient training configurations to maximize model performance under constrained compute budgets."
+  },
+  {
+    index: "03",
+    tag: "SELF-CORRECTION",
+    title: "Bidirectional Generation",
+    text: "Developing models that refine entire sequences simultaneously, catching and fixing reasoning inconsistencies during generation."
+  },
+  {
+    index: "04",
+    tag: "TRANSPARENCY",
+    title: "Open Empirical Research",
+    text: "Publishing raw loss curves, negative findings, benchmark evaluations, and open-weights under the IN1 initiative."
+  },
+  {
+    index: "05",
+    tag: "CAPACITY",
+    title: "Deep-Tech from India",
+    text: "Cultivating foundational AI research capacity in India so engineers can understand, modify, and build frontier models from first principles."
+  }
+];
+
+export default function Foundations() {
+  return (
+    <section id="anatomy" className="relative py-20 md:py-40 bg-black overflow-hidden selection:bg-primary/30">
+      {/* Ambient glow */}
+      <div className="absolute top-0 left-1/4 w-[300px] md:w-[800px] h-[300px] md:h-[800px] bg-blue-600/5 blur-[100px] md:blur-[150px] rounded-full pointer-events-none opacity-40 -translate-y-1/4" />
+      <div className="absolute bottom-0 right-1/4 w-[250px] md:w-[600px] h-[250px] md:h-[600px] bg-blue-900/5 blur-[80px] md:blur-[130px] rounded-full pointer-events-none opacity-30 translate-y-1/4" />
+
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 md:px-12 relative z-10">
+
+        {/* ── SECTION HEADER ── */}
+        <motion.div
+          variants={staggerContainer(0.25, 0.2)}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          className="mb-24"
+        >
+          <motion.div variants={staggerItem} className="flex items-center gap-4 mb-6">
+            <div className="w-12 h-[1px]" style={{ backgroundColor: `${COLORS.brand.blue}66` }} />
+            <span className="font-black tracking-[0.3em] uppercase text-xs" style={{ color: COLORS.brand.blue }}>Foundation Architecture</span>
+          </motion.div>
+          <motion.h2 variants={staggerItem} className="text-4xl sm:text-5xl md:text-8xl font-black text-white tracking-tighter leading-[0.9] max-w-4xl">
+            Born in India.<br />
+            <span style={{ color: COLORS.brand.blue }}>Engineered for the World.</span>
+          </motion.h2>
+        </motion.div>
+
+        {/* ── MAIN GRID ── */}
+        <motion.div
+          variants={staggerContainer(0.25, 0.2)}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start"
+        >
+          {/* ── LEFT: STORY ── */}
+          <div className="lg:col-span-7 space-y-10">
+            <motion.div variants={staggerItem} className="relative pl-8 border-l-2" style={{ borderColor: `${COLORS.brand.blue}33` }}>
+              <p className="text-lg sm:text-xl md:text-2xl text-gray-300 font-medium leading-relaxed">
+                Introlic was founded on{' '}
+                <span className="text-white font-bold underline decoration-[#00a3ff]/40 underline-offset-8">
+                  March 26, 2026
+                </span>{' '}
+                by{' '}
+                <span className="text-white font-bold">mr.Faiz</span> — at the age of{' '}
+                <span className="text-[#00a3ff] font-black">17.</span>{' '}
+                It was born from a question that first surfaced in 2019:{' '}
+                <em className="text-white">
+                  &quot;Why is there no Indian company among the ranks of Google, Microsoft, or Tesla?&quot;
+                </em>
+              </p>
+            </motion.div>
+
+            <motion.p variants={staggerItem} className="text-base sm:text-lg md:text-xl text-gray-500 font-medium leading-relaxed">
+              That question became an obsession. Starting with just a computer and an internet connection,
+              mr.Faiz taught himself programming through YouTube and ChatGPT, built and shipped live platforms,
+              scaled to 13,000 monthly users, learned exactly why most Indian tech companies hit a ceiling, 
+              and decided to attack the root cause instead of the surface.
+            </motion.p>
+
+            <motion.p variants={staggerItem} className="text-base sm:text-lg md:text-xl text-gray-500 font-medium leading-relaxed">
+              The ceiling for Indian tech isn&apos;t talent. It is{' '}
+              <span className="text-white font-semibold">architecture dependency.</span>{' '}
+              Most companies here build services and products on top of foreign AI infrastructure they do not control.
+              Introlic was founded to close that gap — not by copying what already exists, but by engineering a better
+              substrate from the mathematical ground up.
+            </motion.p>
+
+            {/* Technology we're using */}
+            <motion.div variants={staggerItem} className="mt-4 p-5 sm:p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
+              <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-5">
+                <FlaskConical className="w-4 h-4 sm:w-5 sm:h-5 text-[#00a3ff]" />
+                <span className="text-[10px] sm:text-xs font-black text-[#00a3ff] uppercase tracking-[0.2em] sm:tracking-[0.25em]">Technology Foundation</span>
+              </div>
+              <h3 className="text-lg sm:text-2xl font-black text-white mb-2 sm:mb-3 tracking-tight">
+                Discrete Diffusion &amp; SEDD Paradigms
+              </h3>
+              <p className="text-xs sm:text-base text-gray-400 leading-relaxed mb-5 sm:mb-6">
+                We are exploring model architectures based on <span className="text-white font-semibold">Discrete Diffusion Language Models (DLMs) and Score Entropy Discrete Diffusion (SEDD)</span>. 
+                Our research focuses on shifting away from standard autoregressive left-to-right token generation to build highly efficient, 
+                self-correcting language models that fix errors during generation and scale context with minimal computational footprint.
+              </p>
+              <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                {[
+                  { metric: 'DLM / SEDD', label: 'Discrete Diffusion' },
+                  { metric: 'Self-Correcting', label: 'Real-Time Denoising' },
+                  { metric: 'Linear O(N)', label: 'Context Scaling' },
+                ].map((s) => (
+                  <div key={s.label} className="bg-white/[0.02] rounded-xl p-3 sm:p-4 border border-white/[0.04] flex flex-col justify-center">
+                    <div className="text-[12px] sm:text-xl font-black text-[#00a3ff] leading-tight">{s.metric}</div>
+                    <div className="text-[8px] sm:text-[10px] text-gray-500 font-bold uppercase tracking-wider mt-1 leading-tight">{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            <motion.blockquote variants={staggerItem} className="border-l-4 pl-6 py-2 mt-4" style={{ borderColor: COLORS.brand.blue }}>
+              <p className="text-base sm:text-lg text-gray-400 italic leading-snug">
+                &quot;We don&apos;t build for one country. We build for the entire human horizon. If you want to scale, you must never limit your ambition with a geography.&quot;
+              </p>
+              <cite className="block mt-3 text-xs sm:text-sm font-black text-white uppercase tracking-widest">— mr.Faiz, Founder</cite>
+            </motion.blockquote>
+          </div>
+
+          {/* ── RIGHT: COHESIVE CORE PRINCIPLES PANEL ── */}
+          <motion.div variants={staggerItem} className="lg:col-span-5">
+            <div className="rounded-2xl bg-white/[0.02] border border-white/[0.06] p-6 sm:p-7 relative backdrop-blur-sm shadow-2xl">
+              
+              {/* Header */}
+              <div className="flex items-center justify-between pb-5 mb-5 border-b border-white/[0.06]">
+                <div className="flex items-center gap-2.5">
+                  <span className="w-2 h-2 rounded-full bg-[#00a3ff] shadow-[0_0_8px_#00a3ff]" />
+                  <span className="text-[11px] font-mono font-bold tracking-[0.25em] uppercase text-gray-400">
+                    Core Principles
+                  </span>
+                </div>
+                <span className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded bg-white/[0.04] border border-white/[0.06] text-gray-500">
+                  5 PRINCIPLES
+                </span>
+              </div>
+
+              {/* Principle Rows */}
+              <div className="space-y-4">
+                {principles.map((p) => (
+                  <div
+                    key={p.index}
+                    className="group relative p-3 -mx-3 rounded-xl transition-all duration-200 hover:bg-white/[0.03]"
+                  >
+                    <div className="flex items-baseline gap-3 mb-1">
+                      <span className="font-mono text-xs font-bold text-[#00a3ff] opacity-80 group-hover:opacity-100 transition-opacity">
+                        {p.index}
+                      </span>
+                      <h4 className="text-[14px] sm:text-[15px] font-bold text-white tracking-tight flex-1">
+                        {p.title}
+                      </h4>
+                      <span className="text-[9px] font-mono uppercase tracking-widest text-gray-600 group-hover:text-gray-400 transition-colors">
+                        {p.tag}
+                      </span>
+                    </div>
+                    <p className="text-[12px] sm:text-[13px] text-gray-500 leading-relaxed pl-6 group-hover:text-gray-400 transition-colors">
+                      {p.text}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+            </div>
+          </motion.div>
+
+        </motion.div>
+
+        {/* ── MILESTONE FOOTER ── */}
+        <motion.div
+          variants={staggerItem}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="mt-16 sm:mt-24 pt-8 sm:pt-12 border-t border-white/5 flex flex-row items-start justify-between gap-2 sm:gap-6 lg:gap-8 overflow-x-auto no-scrollbar"
+        >
+          <Milestone year="2019" label="Curiosity Sparked" />
+          <Milestone year="2024" label="The Strategic Dropout" />
+          <Milestone year="2025" label="DeepSeek Realization" />
+          <Milestone year="2026" label="Introlic Founded" />
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function Milestone({ year, label }: { year: string; label: string }) {
+  return (
+    <div className="flex flex-col shrink-0 min-w-0 flex-1">
+      <span className="text-xl sm:text-2xl md:text-3xl font-black text-white/20">{year}</span>
+      <span className="text-[8px] sm:text-[10px] md:text-xs font-black text-gray-700 uppercase tracking-widest mt-0.5 sm:mt-1 break-words leading-tight">{label}</span>
+    </div>
+  );
+}
