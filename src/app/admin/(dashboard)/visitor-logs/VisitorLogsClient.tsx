@@ -331,7 +331,7 @@ export default function VisitorLogsClient({ initialVisits }: Props) {
           </div>
         </div>
 
-        <div className="flex flex-wrap gap-4 pt-4 border-t border-white/5">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-4 border-t border-white/5">
           <CustomSelect
             label="Device Type"
             value={deviceFilter}
@@ -342,7 +342,7 @@ export default function VisitorLogsClient({ initialVisits }: Props) {
               { value: "tablet", label: "Tablet" },
             ]}
             onChange={v => { setDeviceFilter(v); setPage(1); }}
-            className="w-40"
+            className="w-full sm:w-36"
           />
           <CustomSelect
             label="Date Range"
@@ -355,7 +355,7 @@ export default function VisitorLogsClient({ initialVisits }: Props) {
               { value: "Custom", label: "Custom Range..." },
             ]}
             onChange={v => { setDateFilter(v); setPage(1); }}
-            className="w-44"
+            className="w-full sm:w-44"
           />
           <CustomSelect
             label="Sort Order"
@@ -365,7 +365,7 @@ export default function VisitorLogsClient({ initialVisits }: Props) {
               { value: "oldest", label: "Oldest First" },
             ]}
             onChange={setSortOrder}
-            className="w-40"
+            className="w-full sm:w-36"
           />
         </div>
 

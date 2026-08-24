@@ -25,7 +25,7 @@ export default async function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-[#020202] text-white flex relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-[#020202] text-white flex flex-col lg:flex-row relative overflow-hidden font-sans">
       <Sidebar 
         currentAdmin={{
           name: currentAdmin.name,
@@ -35,7 +35,7 @@ export default async function DashboardLayout({
           role: currentAdmin.role,
         }} 
       />
-      <main className="flex-1 overflow-y-auto h-screen p-6 md:p-10 relative z-10 custom-scrollbar">
+      <main className="flex-1 overflow-y-auto h-screen p-3.5 sm:p-6 md:p-8 lg:p-10 pt-18 sm:pt-20 lg:pt-10 relative z-10 custom-scrollbar w-full min-w-0">
         {children}
       </main>
     </div>

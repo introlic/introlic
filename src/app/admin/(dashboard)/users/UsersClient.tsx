@@ -502,7 +502,7 @@ export default function UsersClient({ recentUsers: initialUsers }: UsersClientPr
         </div>
 
         {/* Custom selectors filter bar */}
-        <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-white/5">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-4 border-t border-white/5">
           <CustomSelect
             label="Role Privilege"
             value={roleFilter}
@@ -513,7 +513,7 @@ export default function UsersClient({ recentUsers: initialUsers }: UsersClientPr
               { value: "admin", label: "Admin" }
             ]}
             onChange={setRoleFilter}
-            className="w-40"
+            className="w-full sm:w-36"
           />
 
           <CustomSelect
@@ -525,7 +525,7 @@ export default function UsersClient({ recentUsers: initialUsers }: UsersClientPr
               { value: "suspended", label: "Suspended" }
             ]}
             onChange={setStatusFilter}
-            className="w-40"
+            className="w-full sm:w-36"
           />
 
           <CustomSelect
@@ -539,7 +539,7 @@ export default function UsersClient({ recentUsers: initialUsers }: UsersClientPr
               { value: "Custom", label: "Custom Range..." }
             ]}
             onChange={setDateFilter}
-            className="w-44"
+            className="w-full sm:w-44"
           />
 
           <CustomSelect
@@ -552,7 +552,7 @@ export default function UsersClient({ recentUsers: initialUsers }: UsersClientPr
               { value: "name_za", label: "Name Z-A" }
             ]}
             onChange={setSortOrder}
-            className="w-40"
+            className="w-full sm:w-36"
           />
         </div>
 

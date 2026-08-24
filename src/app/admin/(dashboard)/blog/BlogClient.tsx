@@ -48,6 +48,10 @@ function MarkdownToolbar({ textareaRef, value, onChange }: {
   value: string;
   onChange: (val: string) => void;
 }) {
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [uploadFeedback, setUploadFeedback] = useState<string | null>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
+
   const insert = useCallback((action: ToolbarAction) => {
     const el = textareaRef.current;
     if (!el) return;
@@ -70,12 +74,73 @@ function MarkdownToolbar({ textareaRef, value, onChange }: {
     });
   }, [textareaRef, value, onChange]);
 
+  const handleImageFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploadingImage(true);
+    setUploadFeedback("Optimizing & uploading image...");
+
+    try {
+      const formData = new FormData();
+      formData.append("thumbnail", file);
+
+      const res = await fetch("/api/upload/thumbnail", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        alert(err.error || "Image upload failed");
+        return;
+      }
+
+      const data = await res.json();
+      const cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/[^\w\s-]/g, " ");
+      const imgMarkdown = `\n\n![${cleanName || "Figure"}](${data.url})\n\n`;
+
+      const el = textareaRef.current;
+      if (el) {
+        const start = el.selectionStart;
+        const end = el.selectionEnd;
+        const newText = value.slice(0, start) + imgMarkdown + value.slice(end);
+        onChange(newText);
+        requestAnimationFrame(() => {
+          el.focus();
+          const newPos = start + imgMarkdown.length;
+          el.setSelectionRange(newPos, newPos);
+        });
+      } else {
+        onChange(value + imgMarkdown);
+      }
+
+      const savingsMsg = data.savingsPercent > 0 
+        ? `Optimized (${data.savingsPercent}% compressed)` 
+        : `Uploaded (${data.format || "webp"})`;
+      setUploadFeedback(savingsMsg);
+      setTimeout(() => setUploadFeedback(null), 3000);
+    } catch {
+      alert("Network error while uploading image.");
+    } finally {
+      setIsUploadingImage(false);
+      if (imageInputRef.current) imageInputRef.current.value = "";
+    }
+  };
+
   const lines = value.split("\n").length;
   const chars = value.length;
   const words = value.trim() ? value.trim().split(/\s+/).length : 0;
 
   return (
     <div className="flex flex-col gap-1.5">
+      <input
+        ref={imageInputRef}
+        type="file"
+        accept="image/*,.png,.jpg,.jpeg,.webp,.svg,.gif,.avif,.bmp,.tiff"
+        onChange={handleImageFileSelect}
+        className="hidden"
+      />
       <div className="flex flex-wrap items-center gap-1 p-2 bg-[#0a0b10] border border-white/[0.08] rounded-xl">
         {TOOLBAR_ACTIONS.map((action) => (
           <button
@@ -89,12 +154,34 @@ function MarkdownToolbar({ textareaRef, value, onChange }: {
             <span className="hidden sm:inline">{action.label}</span>
           </button>
         ))}
+
+        {/* Upload & Insert Image Button */}
+        <button
+          type="button"
+          disabled={isUploadingImage}
+          onClick={() => imageInputRef.current?.click()}
+          title="Upload & Insert Optimized Image / Figure"
+          className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-[#00a3ff]/10 border border-[#00a3ff]/25 hover:bg-[#00a3ff]/20 hover:border-[#00a3ff]/40 text-[#00a3ff] transition-all duration-150 cursor-pointer text-[10px] font-mono font-bold shrink-0 disabled:opacity-50"
+        >
+          {isUploadingImage ? (
+            <Loader2 className="w-3 h-3 animate-spin" />
+          ) : (
+            <ImageIcon className="w-3 h-3" />
+          )}
+          <span>{isUploadingImage ? "Optimizing..." : "Insert Image"}</span>
+        </button>
+
+        {uploadFeedback && (
+          <span className="text-[10px] font-mono text-emerald-400 px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 animate-fadeIn">
+            {uploadFeedback}
+          </span>
+        )}
       </div>
       <div className="flex items-center gap-3 text-[9px] font-mono text-gray-600 px-1">
         <span>{lines} lines</span>
         <span>{words} words</span>
         <span>{chars} chars</span>
-        <span className="ml-auto text-[#00a3ff]/40">Full Markdown Supported</span>
+        <span className="ml-auto text-[#00a3ff]/40">Universal Image Optimization (Sharp)</span>
       </div>
     </div>
   );
@@ -417,12 +504,13 @@ export default function BlogClient() {
   const handleThumbnailSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.type !== "image/webp") {
-      showAlertDialog("Invalid Format", "Only WebP images are accepted. Please convert your image to WebP first.", "error");
+    const allowed = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif", "image/svg+xml", "image/avif", "image/bmp", "image/tiff"];
+    if (!allowed.includes(file.type.toLowerCase()) && !/\.(jpg|jpeg|png|webp|gif|svg|avif|bmp|tiff)$/i.test(file.name)) {
+      showAlertDialog("Invalid Format", "Supported formats: PNG, JPG, WebP, GIF, SVG, AVIF, BMP, TIFF.", "error");
       return;
     }
-    if (file.size > 3 * 1024 * 1024) {
-      showAlertDialog("File Too Large", `Image must be under 3MB. Your file is ${(file.size / 1024 / 1024).toFixed(2)}MB.`, "error");
+    if (file.size > 20 * 1024 * 1024) {
+      showAlertDialog("File Too Large", `Image must be under 20MB. Your file is ${(file.size / 1024 / 1024).toFixed(2)}MB.`, "error");
       return;
     }
     setThumbnailFile(file);
@@ -707,15 +795,15 @@ export default function BlogClient() {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex border-b border-white/10 pb-3 items-center justify-between gap-4">
-        <div className="flex gap-2 sm:gap-4">
+      <div className="flex border-b border-white/10 pb-3 items-center justify-between gap-2 overflow-x-auto custom-scrollbar">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <button
             onClick={() => {
               setViewMode("overview");
               setEditingPostId(null);
               resetForm();
             }}
-            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer ${
+            className={`px-3 sm:px-4 py-2 rounded-xl text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer shrink-0 ${
               viewMode === "overview" 
                 ? "bg-white/10 text-white border border-white/15 shadow-sm" 
                 : "text-gray-400 hover:text-white hover:bg-white/5"
@@ -734,7 +822,7 @@ export default function BlogClient() {
               setEditingPostId(null);
               resetForm();
             }}
-            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer ${
+            className={`px-3 sm:px-4 py-2 rounded-xl text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer shrink-0 ${
               viewMode === "forge" 
                 ? "bg-white/10 text-white border border-white/15 shadow-sm" 
                 : "text-gray-400 hover:text-white hover:bg-white/5"
@@ -750,7 +838,7 @@ export default function BlogClient() {
               setEditingCategoryId(null);
               resetForm();
             }}
-            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer ${
+            className={`px-3 sm:px-4 py-2 rounded-xl text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer shrink-0 ${
               viewMode === "categories" 
                 ? "bg-white/10 text-white border border-white/15 shadow-sm" 
                 : "text-gray-400 hover:text-white hover:bg-white/5"
@@ -1910,7 +1998,7 @@ export default function BlogClient() {
                       <ImageIcon className="w-4 h-4 text-[#00a3ff]" />
                       <span className="text-xs font-bold text-white uppercase tracking-wider font-mono">WebP Thumbnail</span>
                     </div>
-                    <span className="text-[10px] text-gray-500 font-mono">Max 3MB</span>
+                    <span className="text-[10px] text-emerald-400 font-mono">Auto-Optimized</span>
                   </div>
 
                   <div className="relative">
@@ -1944,12 +2032,12 @@ export default function BlogClient() {
                       >
                         <Upload className="w-5 h-5 text-gray-600 group-hover:text-[#00a3ff] transition-colors" />
                         <span className="text-[10px] text-gray-500 group-hover:text-[#00a3ff] font-semibold uppercase tracking-wider transition-colors">
-                          Click to upload WebP image
+                          Click to upload cover image
                         </span>
-                        <span className="text-[9px] text-gray-600">Only .webp format accepted · Max 3MB</span>
+                        <span className="text-[9px] text-gray-600">Supports PNG, JPG, WebP, SVG, AVIF, GIF · Auto-optimized via Sharp</span>
                       </button>
                     )}
-                    <input ref={thumbInputRef} type="file" accept=".webp,image/webp" onChange={handleThumbnailSelect} className="hidden" />
+                    <input ref={thumbInputRef} type="file" accept="image/*,.png,.jpg,.jpeg,.webp,.svg,.gif,.avif,.bmp,.tiff" onChange={handleThumbnailSelect} className="hidden" />
                   </div>
 
                   {!thumbUrl && (

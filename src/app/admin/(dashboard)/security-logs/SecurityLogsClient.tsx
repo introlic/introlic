@@ -351,7 +351,7 @@ export default function SecurityLogsClient({ initialLogs }: SecurityLogsClientPr
         </div>
 
         {/* Custom selectors filter bar */}
-        <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-white/5">
+        <div className="flex flex-wrap items-center gap-3 sm:gap-4 pt-4 border-t border-white/5">
           <CustomSelect
             label="Verification Status"
             value={statusFilter}
@@ -361,7 +361,7 @@ export default function SecurityLogsClient({ initialLogs }: SecurityLogsClientPr
               { value: "failed", label: "Failed Attempts" }
             ]}
             onChange={setStatusFilter}
-            className="w-44"
+            className="w-full sm:w-44"
           />
 
           <CustomSelect
@@ -375,7 +375,7 @@ export default function SecurityLogsClient({ initialLogs }: SecurityLogsClientPr
               { value: "anonymous", label: "Anonymous / Unregistered" }
             ]}
             onChange={setPrivilegeFilter}
-            className="w-48"
+            className="w-full sm:w-48"
           />
 
           <CustomSelect
@@ -389,7 +389,7 @@ export default function SecurityLogsClient({ initialLogs }: SecurityLogsClientPr
               { value: "Custom", label: "Custom Range..." }
             ]}
             onChange={setDateFilter}
-            className="w-44"
+            className="w-full sm:w-44"
           />
 
           <CustomSelect
@@ -400,7 +400,7 @@ export default function SecurityLogsClient({ initialLogs }: SecurityLogsClientPr
               { value: "oldest", label: "Oldest First" }
             ]}
             onChange={setSortOrder}
-            className="w-40"
+            className="w-full sm:w-36"
           />
         </div>
 

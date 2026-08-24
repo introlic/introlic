@@ -1,20 +1,23 @@
 import { NextRequest, NextResponse } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
+import sharp from "sharp";
 import { getAdminSession } from "@/lib/auth";
 
-const WEBP_MAGIC = Buffer.from([0x52, 0x49, 0x46, 0x46]); // "RIFF"
-const WEBP_MARKER = Buffer.from([0x57, 0x45, 0x42, 0x50]); // "WEBP"
-const MAX_SIZE = 3 * 1024 * 1024; // 3 MB
+// Support up to 20MB source image uploads (sharp will compress it down to <200KB)
+const MAX_SOURCE_SIZE = 20 * 1024 * 1024;
 
-function isWebP(buffer: Buffer): boolean {
-  if (buffer.length < 12) return false;
-  // RIFF at bytes 0-3, WEBP at bytes 8-11
-  return (
-    buffer.subarray(0, 4).equals(WEBP_MAGIC) &&
-    buffer.subarray(8, 12).equals(WEBP_MARKER)
-  );
-}
+const ALLOWED_MIME_TYPES = new Set([
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+  "image/svg+xml",
+  "image/avif",
+  "image/bmp",
+  "image/tiff",
+]);
 
 export async function POST(req: NextRequest) {
   try {
@@ -24,56 +27,109 @@ export async function POST(req: NextRequest) {
     }
 
     const formData = await req.formData();
-    const file = formData.get("thumbnail") as File | null;
+    // Accept "thumbnail", "file", or "image" field names
+    const file = (formData.get("thumbnail") || formData.get("file") || formData.get("image")) as File | null;
 
     if (!file) {
-      return NextResponse.json({ error: "No file provided" }, { status: 400 });
+      return NextResponse.json({ error: "No image file provided" }, { status: 400 });
     }
 
-    // Validate file size
-    if (file.size > MAX_SIZE) {
+    // Validate maximum upload size
+    if (file.size > MAX_SOURCE_SIZE) {
       return NextResponse.json(
-        { error: `File too large. Maximum size is 3MB, received ${(file.size / 1024 / 1024).toFixed(2)}MB` },
+        { error: `File too large. Maximum upload size is 20MB, received ${(file.size / 1024 / 1024).toFixed(2)}MB` },
         { status: 413 }
       );
     }
 
-    // Validate MIME type header
-    if (file.type !== "image/webp") {
+    // Basic MIME or extension validation
+    const mimeType = file.type?.toLowerCase() || "";
+    const isAllowedMime = ALLOWED_MIME_TYPES.has(mimeType);
+    const hasImageExt = /\.(jpg|jpeg|png|webp|gif|svg|avif|bmp|tiff)$/i.test(file.name);
+
+    if (!isAllowedMime && !hasImageExt) {
       return NextResponse.json(
-        { error: "Only WebP images are accepted. Convert your image to WebP format first." },
+        { error: `Unsupported image format (${file.type || "unknown"}). Supported: PNG, JPG, WebP, GIF, SVG, AVIF, BMP, TIFF.` },
         { status: 415 }
       );
     }
 
-    // Read buffer and validate magic bytes (prevent spoofed MIME types)
     const arrayBuffer = await file.arrayBuffer();
-    const buffer = Buffer.from(arrayBuffer);
+    const inputBuffer = Buffer.from(arrayBuffer);
 
-    if (!isWebP(buffer)) {
-      return NextResponse.json(
-        { error: "File is not a valid WebP image (magic bytes check failed)." },
-        { status: 415 }
-      );
-    }
-
-    // Generate unique filename with timestamp + random suffix
-    const timestamp = Date.now();
-    const random = Math.random().toString(36).substring(2, 8);
-    const filename = `thumb_${timestamp}_${random}.webp`;
-
-    // Ensure upload directory exists
+    // Target upload directory
     const uploadDir = path.join(process.cwd(), "public", "uploads", "thumbnails");
     await mkdir(uploadDir, { recursive: true });
 
-    // Write file
+    const timestamp = Date.now();
+    const random = Math.random().toString(36).substring(2, 8);
+
+    // If SVG format: preserve vector format
+    if (mimeType === "image/svg+xml" || file.name.toLowerCase().endsWith(".svg")) {
+      const filename = `svg_${timestamp}_${random}.svg`;
+      const filePath = path.join(uploadDir, filename);
+      await writeFile(filePath, inputBuffer);
+
+      const publicUrl = `/uploads/thumbnails/${filename}`;
+      return NextResponse.json({
+        url: publicUrl,
+        filename,
+        originalSize: file.size,
+        optimizedSize: inputBuffer.length,
+        savingsPercent: 0,
+        format: "svg",
+      }, { status: 201 });
+    }
+
+    // Raster Image Processing & Optimization via Sharp
+    // 1. Auto-rotate based on EXIF orientation (fixes mobile upload rotation)
+    // 2. Cap dimensions at max 2048px (maintains high-res sharpness, removes waste)
+    // 3. Compress to WebP with smart chroma subsampling & quality 85
+    // 4. Strip EXIF/metadata for privacy and size reduction
+    const imagePipeline = sharp(inputBuffer)
+      .rotate() // Auto-orient
+      .resize({
+        width: 2048,
+        height: 2048,
+        fit: "inside",
+        withoutEnlargement: true,
+      })
+      .webp({
+        quality: 85,
+        effort: 6, // High compression effort
+        smartSubsample: true,
+      });
+
+    const optimizedBuffer = await imagePipeline.toBuffer();
+    const metadata = await sharp(optimizedBuffer).metadata();
+
+    const filename = `thumb_${timestamp}_${random}.webp`;
     const filePath = path.join(uploadDir, filename);
-    await writeFile(filePath, buffer);
+    await writeFile(filePath, optimizedBuffer);
+
+    const originalSize = file.size;
+    const optimizedSize = optimizedBuffer.length;
+    const savingsPercent = originalSize > 0 
+      ? Math.max(0, parseFloat((((originalSize - optimizedSize) / originalSize) * 100).toFixed(1)))
+      : 0;
 
     const publicUrl = `/uploads/thumbnails/${filename}`;
-    return NextResponse.json({ url: publicUrl, filename }, { status: 201 });
-  } catch (err) {
+
+    return NextResponse.json({
+      url: publicUrl,
+      filename,
+      originalSize,
+      optimizedSize,
+      savingsPercent,
+      width: metadata.width || 0,
+      height: metadata.height || 0,
+      format: "webp",
+    }, { status: 201 });
+  } catch (err: any) {
     console.error("[POST /api/upload/thumbnail]", err);
-    return NextResponse.json({ error: "Failed to upload thumbnail" }, { status: 500 });
+    return NextResponse.json(
+      { error: err?.message || "Failed to process and optimize image" },
+      { status: 500 }
+    );
   }
 }

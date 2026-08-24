@@ -7,7 +7,8 @@ import {
   Globe, Layers, Link2, ChevronDown, Tag, Compass, Calendar, Database,
   LayoutGrid, List, Columns, ExternalLink, Code, Bold, Italic,
   Quote, Heading2, Check, Eye, Pencil, RefreshCw, AlertCircle,
-  Copy, CheckCheck, Hash, FolderPlus, Folder
+  Copy, CheckCheck, Hash, FolderPlus, Folder,
+  Image as ImageIcon, Upload
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { parseMarkdown } from "@/components/blog/MarkdownRenderer";
@@ -282,6 +283,11 @@ export default function ProjectsClient() {
   const [isUploadingLogo, setIsUploadingLogo] = useState(false);
   const logoInputRef = useRef<HTMLInputElement>(null);
 
+  // README Image upload state
+  const [isUploadingReadmeImage, setIsUploadingReadmeImage] = useState(false);
+  const [readmeUploadFeedback, setReadmeUploadFeedback] = useState<string | null>(null);
+  const readmeImageInputRef = useRef<HTMLInputElement>(null);
+
   const [projectSearch, setProjectSearch] = useState("");
   const [projectCategoryFilter, setProjectCategoryFilter] = useState("All");
   const [projectStatusFilter, setProjectStatusFilter] = useState("All");
@@ -500,12 +506,13 @@ export default function ProjectsClient() {
   const handleLogoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.type !== "image/webp") {
-      showAlertDialog("Invalid Format", "Only WebP images are accepted. Please convert your image to WebP first.", "error");
+    const allowed = ["image/jpeg", "image/jpg", "image/png", "image/webp", "image/gif", "image/svg+xml", "image/avif", "image/bmp", "image/tiff"];
+    if (!allowed.includes(file.type.toLowerCase()) && !/\.(jpg|jpeg|png|webp|gif|svg|avif|bmp|tiff)$/i.test(file.name)) {
+      showAlertDialog("Invalid Format", "Supported formats: PNG, JPG, WebP, GIF, SVG, AVIF, BMP, TIFF.", "error");
       return;
     }
-    if (file.size > 3 * 1024 * 1024) {
-      showAlertDialog("File Too Large", `Image must be under 3MB. Your file is ${(file.size / 1024 / 1024).toFixed(2)}MB.`, "error");
+    if (file.size > 20 * 1024 * 1024) {
+      showAlertDialog("File Too Large", `Image must be under 20MB. Your file is ${(file.size / 1024 / 1024).toFixed(2)}MB.`, "error");
       return;
     }
     setLogoFile(file);
@@ -810,6 +817,50 @@ export default function ProjectsClient() {
     }));
   };
 
+  const handleReadmeImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploadingReadmeImage(true);
+    setReadmeUploadFeedback("Optimizing & uploading image...");
+
+    try {
+      const formData = new FormData();
+      formData.append("thumbnail", file);
+
+      const res = await fetch("/api/upload/thumbnail", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        showAlertDialog("Upload Error", err.error || "Image upload failed", "error");
+        return;
+      }
+
+      const data = await res.json();
+      const cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/[^\w\s-]/g, " ");
+      const imgMarkdown = `\n\n![${cleanName || "Figure"}](${data.url})\n\n`;
+
+      setProjectForm(prev => ({
+        ...prev,
+        readme: prev.readme ? `${prev.readme}${imgMarkdown}` : imgMarkdown.trim()
+      }));
+
+      const savingsMsg = data.savingsPercent > 0 
+        ? `Optimized (${data.savingsPercent}% compressed)` 
+        : `Uploaded (${data.format || "webp"})`;
+      setReadmeUploadFeedback(savingsMsg);
+      setTimeout(() => setReadmeUploadFeedback(null), 3000);
+    } catch {
+      showAlertDialog("Network Error", "Could not connect to upload server.", "error");
+    } finally {
+      setIsUploadingReadmeImage(false);
+      if (readmeImageInputRef.current) readmeImageInputRef.current.value = "";
+    }
+  };
+
   const processedProjects = useMemo(() => {
     let list = [...projectsList];
 
@@ -883,15 +934,15 @@ export default function ProjectsClient() {
       </div>
 
       {/* ─── Navigation Tabs ──────────────────────────────────────────────── */}
-      <div className="flex border-b border-white/10 pb-3 items-center justify-between gap-4">
-        <div className="flex gap-2 sm:gap-4">
+      <div className="flex border-b border-white/10 pb-3 items-center justify-between gap-2 overflow-x-auto custom-scrollbar">
+        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <button
             onClick={() => {
               setViewMode("overview");
               setEditingProjectId(null);
               resetForm();
             }}
-            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer ${
+            className={`px-3 sm:px-4 py-2 rounded-xl text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer shrink-0 ${
               viewMode === "overview" 
                 ? "bg-white/10 text-white border border-white/15 shadow-sm" 
                 : "text-gray-400 hover:text-white hover:bg-white/5"
@@ -910,7 +961,7 @@ export default function ProjectsClient() {
               setEditingProjectId(null);
               resetForm();
             }}
-            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer ${
+            className={`px-3 sm:px-4 py-2 rounded-xl text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer shrink-0 ${
               viewMode === "forge" 
                 ? "bg-white/10 text-white border border-white/15 shadow-sm" 
                 : "text-gray-400 hover:text-white hover:bg-white/5"
@@ -926,7 +977,7 @@ export default function ProjectsClient() {
               setEditingCategoryId(null);
               resetForm();
             }}
-            className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer ${
+            className={`px-3 sm:px-4 py-2 rounded-xl text-[11px] sm:text-xs font-bold uppercase tracking-wider transition-all flex items-center gap-2 cursor-pointer shrink-0 ${
               viewMode === "categories" 
                 ? "bg-white/10 text-white border border-white/15 shadow-sm" 
                 : "text-gray-400 hover:text-white hover:bg-white/5"
@@ -2154,10 +2205,17 @@ export default function ProjectsClient() {
                     </div>
                   </div>
 
-                  {readmeTab === "write" ? (
+                    {readmeTab === "write" ? (
                     <div className="space-y-2">
+                      <input
+                        ref={readmeImageInputRef}
+                        type="file"
+                        accept="image/*,.png,.jpg,.jpeg,.webp,.svg,.gif,.avif,.bmp,.tiff"
+                        onChange={handleReadmeImageUpload}
+                        className="hidden"
+                      />
                       {/* Markdown Toolbar */}
-                      <div className="flex flex-wrap items-center gap-1 p-1 bg-black/40 border border-white/5 rounded-xl text-gray-400">
+                      <div className="flex flex-wrap items-center gap-1 p-1.5 bg-black/40 border border-white/5 rounded-xl text-gray-400">
                         <button 
                           type="button" 
                           onClick={() => insertMarkdownSnippet("## Heading 2\n")}
@@ -2206,6 +2264,27 @@ export default function ProjectsClient() {
                         >
                           <List className="w-3.5 h-3.5" />
                         </button>
+
+                        <button
+                          type="button"
+                          disabled={isUploadingReadmeImage}
+                          onClick={() => readmeImageInputRef.current?.click()}
+                          title="Upload & Insert Optimized Image / Figure"
+                          className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#00a3ff]/10 border border-[#00a3ff]/25 hover:bg-[#00a3ff]/20 hover:border-[#00a3ff]/40 text-[#00a3ff] transition-all cursor-pointer text-[10px] font-mono font-bold shrink-0 disabled:opacity-50 ml-1"
+                        >
+                          {isUploadingReadmeImage ? (
+                            <Loader2 className="w-3 h-3 animate-spin" />
+                          ) : (
+                            <ImageIcon className="w-3 h-3" />
+                          )}
+                          <span>{isUploadingReadmeImage ? "Optimizing..." : "Insert Image"}</span>
+                        </button>
+
+                        {readmeUploadFeedback && (
+                          <span className="text-[10px] font-mono text-emerald-400 px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 animate-fadeIn">
+                            {readmeUploadFeedback}
+                          </span>
+                        )}
                       </div>
 
                       <textarea 
@@ -2308,12 +2387,12 @@ export default function ProjectsClient() {
                       >
                         <Plus className="w-5 h-5 text-gray-500 group-hover:text-[#00a3ff] transition-colors" />
                         <span className="text-xs text-gray-400 group-hover:text-white font-medium transition-colors">
-                          Click to upload WebP Logo
+                          Click to upload Project Logo / Emblem
                         </span>
-                        <span className="text-[10px] text-gray-600 font-mono">WebP format · Max 3MB</span>
+                        <span className="text-[10px] text-gray-600 font-mono">Supports PNG, JPG, WebP, SVG, AVIF, GIF · Auto-optimized via Sharp</span>
                       </button>
                     )}
-                    <input ref={logoInputRef} type="file" accept=".webp,image/webp" onChange={handleLogoSelect} className="hidden" />
+                    <input ref={logoInputRef} type="file" accept="image/*,.png,.jpg,.jpeg,.webp,.svg,.gif,.avif,.bmp,.tiff" onChange={handleLogoSelect} className="hidden" />
                   </div>
                 </div>
 
