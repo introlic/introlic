@@ -141,15 +141,17 @@ export default function Roadmap() {
             </div>
             
             <div className="lg:col-span-8 relative mt-8 lg:mt-0">
-                {/* Continuous Vertical Line with dynamic gradient */}
-                <div className="absolute left-[11px] sm:left-[23px] md:left-[27px] top-4 bottom-4 w-px bg-gradient-to-b from-emerald-500/30 via-[#00a3ff]/30 to-white/5" />
+                {/* Continuous Vertical Line with dynamic gradient - perfectly centered with bullet icons */}
+                <div className="absolute left-[12px] sm:left-[20px] md:left-[24px] top-6 bottom-6 w-px bg-gradient-to-b from-emerald-500/40 via-[#00a3ff]/40 to-white/10" />
 
                 <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.2 } } }} className="flex flex-col gap-8 md:gap-10">
                     {/* Log 01: Completed */}
                     <motion.div variants={fadeUp} className="relative pl-10 sm:pl-16 md:pl-20 group">
-                        {/* Bullet Icon */}
-                        <div className="absolute left-0 sm:left-3 md:left-4 top-8 w-5 h-5 md:w-6 md:h-6 rounded-full bg-black border border-emerald-500/80 flex items-center justify-center shadow-[0_0_12px_rgba(16,185,129,0.2)] group-hover:scale-105 transition-transform duration-300">
-                            <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-emerald-500" />
+                        {/* Bullet Icon - Mathematically centered on vertical line */}
+                        <div className="absolute left-0 sm:left-2 md:left-3 top-8 -translate-y-1/2 w-6 h-6 flex items-center justify-center">
+                            <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-black border border-emerald-500/80 flex items-center justify-center shadow-[0_0_12px_rgba(16,185,129,0.3)] group-hover:scale-110 transition-transform duration-300">
+                                <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-emerald-500" />
+                            </div>
                         </div>
                         
                         {/* Card Wrap */}
@@ -170,13 +172,15 @@ export default function Roadmap() {
 
                     {/* Log 02: Active Target */}
                     <motion.div variants={fadeUp} className="relative pl-10 sm:pl-16 md:pl-20 group">
-                        {/* Bullet Icon */}
-                        <div 
-                          className="absolute left-0 sm:left-3 md:left-4 top-8 w-5 h-5 md:w-6 md:h-6 rounded-full bg-black border flex items-center justify-center shadow-[0_0_15px_rgba(0,163,255,0.4)] group-hover:scale-105 transition-transform duration-300"
-                          style={{ borderColor: COLORS.brand.blue }}
-                        >
-                            <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full animate-ping absolute" style={{ backgroundColor: COLORS.brand.blue }} />
-                            <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full" style={{ backgroundColor: COLORS.brand.blue }} />
+                        {/* Bullet Icon - Mathematically centered on vertical line */}
+                        <div className="absolute left-0 sm:left-2 md:left-3 top-8 -translate-y-1/2 w-6 h-6 flex items-center justify-center">
+                            <div 
+                              className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-black border flex items-center justify-center shadow-[0_0_15px_rgba(0,163,255,0.4)] group-hover:scale-110 transition-transform duration-300"
+                              style={{ borderColor: COLORS.brand.blue }}
+                            >
+                                <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full animate-ping absolute" style={{ backgroundColor: COLORS.brand.blue }} />
+                                <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full" style={{ backgroundColor: COLORS.brand.blue }} />
+                            </div>
                         </div>
                         
                         {/* Card Wrap */}
@@ -210,43 +214,31 @@ export default function Roadmap() {
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.3 } } }} className="flex flex-col gap-6 md:gap-8">
                 
                 {/* XT-Class : The Engine */}
-                <motion.div 
-                  variants={fadeUp} 
-                  className="relative border-l border-t border-r bg-[#000510] group"
-                  style={{ borderColor: `${COLORS.brand.blue}33` }}
-                >
+                <motion.div variants={fadeUp} className="relative border border-white/5 bg-[#030303] overflow-hidden">
                     <div className="absolute top-0 right-0 p-4 md:p-8">
-                        <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 rounded-full animate-pulse" style={{ backgroundColor: COLORS.brand.blue }} />
-                            <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-widest" style={{ color: COLORS.brand.blue }}>Active Engine</span>
-                        </div>
+                        <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-widest" style={{ color: COLORS.brand.blue }}>Active Engine</span>
                     </div>
 
-                    <div className="px-4 py-6 sm:p-8 md:p-16 grid grid-cols-1 xl:grid-cols-12 gap-6 md:gap-12 items-center relative overflow-hidden">
-                        {/* Glow effect */}
-                        <div 
-                          className="absolute top-1/2 -left-32 w-96 h-96 blur-[120px] rounded-full pointer-events-none -translate-y-1/2" 
-                          style={{ backgroundColor: COLORS.brand.blueDim }}
-                        />
-
-                        <div className="xl:col-span-5 relative z-10">
-                            <Zap className="w-4 h-4 md:w-8 md:h-8 mb-2 md:mb-6 opacity-80" style={{ color: COLORS.brand.blue }} />
+                    <div className="px-4 py-6 sm:p-8 md:p-16 grid grid-cols-1 xl:grid-cols-12 gap-6 md:gap-12 items-center">
+                        <div className="xl:col-span-5">
+                            <Zap className="w-4 h-4 md:w-8 md:h-8 mb-2 md:mb-6" style={{ color: COLORS.brand.blue }} />
                             <h3 className="text-xl sm:text-3xl md:text-5xl lg:text-7xl font-black tracking-tighter text-white mb-1 md:mb-2">XT-Class</h3>
                             <p className="text-[9px] sm:text-[11px] md:text-sm font-bold tracking-[0.2em] uppercase font-mono mb-3 md:mb-8" style={{ color: `${COLORS.brand.blue}b3` }}>220M — 7B Parameters</p>
-                            <p className="text-xs sm:text-sm md:text-lg text-gray-400 font-medium leading-relaxed">
-                                The Inference Pioneers. While we seek matching long-term funding, we build with what we have. Currently funded completely by MR.FAIZ, revenue and validation data from XT models directly fuel the path to the ARC One flagship.
+                            <p className="text-xs sm:text-sm md:text-lg text-gray-500 font-medium leading-relaxed">
+                                The Experimental Substrate. The engine designed to produce empirical validation, benchmark datasets, and architectural iterations. Every model in this class solves a specific scaling equation.
                             </p>
                         </div>
 
-                        <div className="xl:col-span-7 relative z-10 grid grid-cols-3 gap-px" style={{ backgroundColor: `${COLORS.brand.blue}33` }}>
+                        <div className="xl:col-span-7 grid grid-cols-3 gap-px bg-white/10">
                             {[
-                                { value: 'Edge-First', label: 'Deployment' },
-                                { value: 'Sub-100ms', label: 'Latency' },
-                                { value: '25×', label: 'Speedup' }
+                                { value: '220M', label: 'Initial Scale', highlight: true },
+                                { value: 'SEDD', label: 'Architecture' },
+                                { value: 'DLM', label: 'Core Paradigm' }
                             ].map(stat => (
                                 <div 
-                                  key={stat.label} 
-                                  className="bg-[#00030a] py-3 px-1 sm:p-6 md:p-8 flex flex-col justify-center items-center transition-colors hover:bg-white/[0.02]"
+                                    key={stat.label} 
+                                    className="bg-[#050505] py-3 px-1 sm:p-6 md:p-8 flex flex-col justify-center items-center"
+                                    style={{ color: stat.highlight ? COLORS.brand.blue : undefined }}
                                 >
                                     <span className="text-[10px] min-[360px]:text-xs sm:text-lg md:text-xl lg:text-2xl font-black text-white text-center">{stat.value}</span>
                                     <span className="text-[6px] min-[360px]:text-[8px] sm:text-[9px] md:text-[10px] font-bold text-gray-500 uppercase tracking-normal min-[360px]:tracking-wider sm:tracking-widest mt-1 text-center">{stat.label}</span>
@@ -255,15 +247,6 @@ export default function Roadmap() {
                         </div>
                     </div>
                 </motion.div>
-
-                {/* Connecting structure */}
-                <div className="flex justify-center -my-9 z-20 relative px-12 lg:px-0 lg:justify-end lg:pr-32">
-                    <div className="w-px h-16 bg-gradient-to-b relative" style={{ background: `linear-gradient(to bottom, ${COLORS.brand.blue}80, rgba(255,255,255,0.1))` }}>
-                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-black border flex items-center justify-center" style={{ borderColor: `${COLORS.brand.blue}80` }}>
-                              <MoveDown className="w-2 h-2" style={{ color: COLORS.brand.blue }} />
-                         </div>
-                    </div>
-                </div>
 
                 {/* ARC One-Class : The Horizon */}
                 <motion.div variants={fadeUp} className="relative border border-white/5 bg-[#030303] overflow-hidden">
@@ -322,56 +305,133 @@ export default function Roadmap() {
                  </div>
             </div>
 
-            <div className="relative w-full py-4 md:py-8 mt-4 md:mt-12 mb-4 md:mb-6">
-                 {/* Massive track background */}
-                 <div className="absolute top-1/2 left-0 right-0 h-2 md:h-3 bg-white/5 -translate-y-1/2 rounded-full overflow-hidden hidden md:block">
-                     {/* Filled progress up to current */}
-                     <div 
-                        className="absolute top-0 left-0 bottom-0 w-[20%] rounded-full shadow-[0_0_30px_rgba(0,163,255,0.5)]" 
-                        style={{ background: `linear-gradient(to right, ${COLORS.brand.blueDim}, ${COLORS.brand.blue})` }}
-                     />
-                 </div>
+            {/* ── PERFECTLY CENTERED PROGRESSION SLIDER STRIP ── */}
+            <div className="relative w-full py-6 md:py-10 mt-4 md:mt-8 mb-4 md:mb-6">
                  
-                 {/* Mobile vertical track line */}
-                 <div className="absolute left-[24px] top-4 bottom-4 w-1 bg-white/5 -translate-x-1/2 rounded-full overflow-hidden block md:hidden">
-                     <div 
-                        className="absolute top-0 left-0 bottom-[80%] right-0 rounded-full" 
-                        style={{ background: `linear-gradient(to bottom, ${COLORS.brand.blueDim}, ${COLORS.brand.blue})` }}
-                     />
-                 </div>
-                 
-                 <div className="flex flex-col md:flex-row justify-between items-center relative z-10 md:px-6 gap-8 md:gap-0">
-                      {xtModels.map((model) => (
-                        <div key={model.params} className="flex flex-row md:flex-col items-center gap-6 md:gap-6 w-full md:w-[100px] justify-start md:justify-center">
-                            {/* Node Point Wrapper for Mobile Axis Alignment */}
-                            <div className="w-12 h-12 md:w-auto md:h-auto flex items-center justify-center shrink-0 relative">
-                                {model.done ? (
-                                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-full border-4 border-emerald-500 flex items-center justify-center shadow-[0_0_30px_rgba(16,185,129,0.3)] z-10 bg-black shrink-0">
-                                        <div className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-emerald-500" />
-                                    </div>
-                                ) : model.current ? (
-                                    <div 
-                                      className="w-12 h-12 md:w-16 md:h-16 rounded-full border-4 bg-black flex items-center justify-center relative z-10 transition-transform hover:scale-110 cursor-pointer shrink-0"
-                                      style={{ borderColor: COLORS.brand.blue, boxShadow: `0 0 50px ${COLORS.brand.blueMuted}` }}
-                                    >
-                                        <div className="w-3.5 h-3.5 md:w-4 md:h-4 rounded-full animate-ping absolute" style={{ backgroundColor: COLORS.brand.blue }} />
-                                        <div className="w-4 h-4 md:w-5 md:h-5 rounded-full" style={{ backgroundColor: COLORS.brand.blue }} />
-                                    </div>
-                                ) : (
-                                    <div className="w-8 h-8 md:w-10 md:h-10 rounded-full border-2 border-white/20 bg-black flex items-center justify-center z-10 shrink-0">
-                                        <div className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-white/20" />
-                                    </div>
-                                )}
-                            </div>
+                 {/* ── DESKTOP VIEW: HORIZONTAL TRACK WITH CENTERED ICONS & LABELS ── */}
+                 <div className="hidden md:block relative w-full">
+                     {/* Horizontal Guide Track Line */}
+                     <div className="absolute top-[36px] left-[50px] right-[50px] h-2 bg-white/5 -translate-y-1/2 rounded-full overflow-hidden z-0">
+                         {/* Filled active progress bar from node 1 to node 2 */}
+                         <div 
+                            className="absolute top-0 left-0 bottom-0 w-[20%] rounded-full shadow-[0_0_30px_rgba(0,163,255,0.7)]" 
+                            style={{ background: `linear-gradient(to right, ${COLORS.brand.blueDim}, ${COLORS.brand.blue})` }}
+                         />
+                     </div>
 
-                            {/* Node Label */}
-                            <div className="text-left md:text-center font-mono flex flex-col gap-0 md:gap-2">
-                                <span className={`text-xl md:text-2xl font-black tracking-tight ${model.done ? 'text-emerald-500' : model.current ? 'text-white' : 'text-gray-500'}`}>{model.params}</span>
-                                <span className={`text-[10px] md:text-[11px] font-bold uppercase tracking-widest ${model.done ? 'text-emerald-500/60' : model.current ? 'text-[#00a3ff]' : 'text-gray-600'}`} style={{ color: model.current ? COLORS.brand.blue : undefined }}>{model.name}</span>
-                            </div>
-                        </div>
-                     ))}
+                     {/* Horizontal Nodes Row */}
+                     <div className="grid grid-cols-6 items-start relative z-10 w-full">
+                         {xtModels.map((model) => (
+                             <div key={model.params} className="flex flex-col items-center justify-center group">
+                                 {/* Fixed-Height Node Wrapper ensuring 100% vertical & horizontal center alignment */}
+                                 <div className="w-[72px] h-[72px] flex items-center justify-center relative shrink-0">
+                                     {model.done ? (
+                                         <div className="w-12 h-12 rounded-full border-4 border-emerald-500 flex items-center justify-center shadow-[0_0_30px_rgba(16,185,129,0.35)] z-10 bg-black shrink-0 transition-transform group-hover:scale-110">
+                                             <div className="w-3 h-3 rounded-full bg-emerald-500" />
+                                         </div>
+                                     ) : model.current ? (
+                                         <div 
+                                           className="w-16 h-16 rounded-full border-4 bg-black flex items-center justify-center relative z-10 transition-transform group-hover:scale-110 cursor-pointer shrink-0"
+                                           style={{ borderColor: COLORS.brand.blue, boxShadow: `0 0 50px ${COLORS.brand.blueMuted}` }}
+                                         >
+                                             <div className="w-4 h-4 rounded-full animate-ping absolute" style={{ backgroundColor: COLORS.brand.blue }} />
+                                             <div className="w-5 h-5 rounded-full" style={{ backgroundColor: COLORS.brand.blue }} />
+                                         </div>
+                                     ) : (
+                                         <div className="w-10 h-10 rounded-full border-2 border-white/20 bg-black flex items-center justify-center z-10 shrink-0 group-hover:border-white/40 transition-colors">
+                                             <div className="w-2 h-2 rounded-full bg-white/20 group-hover:bg-white/40 transition-colors" />
+                                         </div>
+                                     )}
+                                 </div>
+
+                                 {/* Centered Node Typography */}
+                                 <div className="text-center font-mono flex flex-col items-center justify-center gap-1 mt-4">
+                                     <span className={`text-xl lg:text-2xl font-black tracking-tight ${model.done ? 'text-emerald-500' : model.current ? 'text-white' : 'text-gray-500'}`}>
+                                         {model.params}
+                                     </span>
+                                     <span 
+                                       className={`text-[10px] lg:text-[11px] font-bold uppercase tracking-widest ${model.done ? 'text-emerald-500/70' : model.current ? 'text-[#00a3ff]' : 'text-gray-600'}`} 
+                                       style={{ color: model.current ? COLORS.brand.blue : undefined }}
+                                     >
+                                         {model.name}
+                                     </span>
+                                     <span className={`text-[8px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full mt-1 ${
+                                         model.done ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                                         model.current ? 'bg-[#00a3ff]/10 text-[#00a3ff] border border-[#00a3ff]/25 animate-pulse' :
+                                         'text-gray-700'
+                                     }`}>
+                                         {model.status}
+                                     </span>
+                                 </div>
+                             </div>
+                         ))}
+                     </div>
                  </div>
+
+                 {/* ── MOBILE VIEW: VERTICAL TRACK WITH CENTERED ICONS & DETAILS ── */}
+                 <div className="block md:hidden relative w-full pl-2">
+                     {/* Continuous Vertical Guide Track Line */}
+                     <div className="absolute left-[30px] top-[30px] bottom-[30px] w-1 bg-white/5 -translate-x-1/2 rounded-full overflow-hidden z-0">
+                         {/* Filled active vertical progress */}
+                         <div 
+                            className="absolute top-0 left-0 right-0 bottom-[80%] rounded-full shadow-[0_0_20px_rgba(0,163,255,0.7)]" 
+                            style={{ background: `linear-gradient(to bottom, ${COLORS.brand.blueDim}, ${COLORS.brand.blue})` }}
+                         />
+                     </div>
+
+                     {/* Mobile Vertical Nodes List */}
+                     <div className="flex flex-col gap-8 relative z-10 w-full">
+                         {xtModels.map((model) => (
+                             <div key={model.params} className="flex items-center gap-5 w-full">
+                                 {/* Icon Node Wrapper ensuring 100% center alignment on vertical line */}
+                                 <div className="w-[60px] h-[60px] flex items-center justify-center relative shrink-0">
+                                     {model.done ? (
+                                         <div className="w-11 h-11 rounded-full border-4 border-emerald-500 flex items-center justify-center shadow-[0_0_25px_rgba(16,185,129,0.35)] z-10 bg-black shrink-0">
+                                             <div className="w-3 h-3 rounded-full bg-emerald-500" />
+                                         </div>
+                                     ) : model.current ? (
+                                         <div 
+                                           className="w-14 h-14 rounded-full border-4 bg-black flex items-center justify-center relative z-10 shrink-0"
+                                           style={{ borderColor: COLORS.brand.blue, boxShadow: `0 0 40px ${COLORS.brand.blueMuted}` }}
+                                         >
+                                             <div className="w-3.5 h-3.5 rounded-full animate-ping absolute" style={{ backgroundColor: COLORS.brand.blue }} />
+                                             <div className="w-4 h-4 rounded-full" style={{ backgroundColor: COLORS.brand.blue }} />
+                                         </div>
+                                     ) : (
+                                         <div className="w-9 h-9 rounded-full border-2 border-white/20 bg-black flex items-center justify-center z-10 shrink-0">
+                                             <div className="w-1.5 h-1.5 rounded-full bg-white/20" />
+                                         </div>
+                                     )}
+                                 </div>
+
+                                 {/* Node Text Info */}
+                                 <div className="flex flex-col font-mono justify-center min-w-0 flex-1">
+                                     <div className="flex items-center gap-2.5">
+                                         <span className={`text-xl font-black tracking-tight ${model.done ? 'text-emerald-500' : model.current ? 'text-white' : 'text-gray-400'}`}>
+                                             {model.params}
+                                         </span>
+                                         <span 
+                                           className={`text-xs font-bold uppercase tracking-widest ${model.done ? 'text-emerald-500/80' : model.current ? 'text-[#00a3ff]' : 'text-gray-500'}`} 
+                                           style={{ color: model.current ? COLORS.brand.blue : undefined }}
+                                         >
+                                             {model.name}
+                                         </span>
+                                     </div>
+                                     <div className="mt-1">
+                                         <span className={`text-[9px] font-mono uppercase tracking-wider px-2 py-0.5 rounded-full inline-block ${
+                                             model.done ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
+                                             model.current ? 'bg-[#00a3ff]/10 text-[#00a3ff] border border-[#00a3ff]/25' :
+                                             'text-gray-600'
+                                         }`}>
+                                             {model.status}
+                                         </span>
+                                     </div>
+                                 </div>
+                             </div>
+                         ))}
+                     </div>
+                 </div>
+
             </div>
         </motion.div>
 
