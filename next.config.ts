@@ -33,10 +33,28 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   /* config options here */
-  allowedDevOrigins: ["introlic.site", "*.introlic.site"],
+  allowedDevOrigins: [
+    "introlic.in", 
+    "*.introlic.in", 
+    "introlic.site", 
+    "*.introlic.site", 
+    "localhost:3000", 
+    "127.0.0.1:3000"
+  ],
   experimental: {
     serverActions: {
-      allowedOrigins: ["introlic.site", "*.introlic.site", "localhost:3000", "localhost:3004", "127.0.0.1:3000", "127.0.0.1:3004"],
+      allowedOrigins: [
+        "introlic.in",
+        "*.introlic.in",
+        "www.introlic.in",
+        "introlic.site", 
+        "*.introlic.site", 
+        "www.introlic.site",
+        "localhost:3000", 
+        "localhost:3004", 
+        "127.0.0.1:3000", 
+        "127.0.0.1:3004"
+      ],
     },
   },
   // Image optimization: serve WebP, define responsive breakpoints
@@ -55,7 +73,7 @@ const nextConfig: NextConfig = {
         source: '/(.*)',
         headers: securityHeaders,
       },
-    ]
+    ];
   },
 };
 
