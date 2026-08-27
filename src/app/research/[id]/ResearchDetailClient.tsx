@@ -140,8 +140,24 @@ function AuthorCard({ authorName, authorsList, label = "Author" }: {
 }) {
   if (!authorName) return null;
 
-  const nameLower = authorName.toLowerCase().trim();
-  let authorObj = authorsList.find(a => a.name?.toLowerCase().trim() === nameLower) || null;
+  const nameLower = authorName.toLowerCase().replace(/\s+/g, ' ').trim();
+  let authorObj = authorsList.find(a => a.name?.toLowerCase().replace(/\s+/g, ' ').trim() === nameLower) || null;
+
+  if (!authorObj && ["mr.faiz", "faiz", "mr. faiz", "mr faiz", "shah faiz", "shah  faiz"].includes(nameLower)) {
+    authorObj = {
+      name: "SHAH  FAIZ",
+      dateOfBirth: null,
+      bio: "Founder & systems builder. Engineering sovereign digital systems from first principles, built without institutional backing or venture safety nets.",
+      socialLinks: {
+        twitter: "https://x.com/MrUniqers",
+        instagram: "https://www.instagram.com/mr.uniqers/",
+        youtube: "https://youtube.com/@channel",
+        linkedin: "https://www.linkedin.com/in/iamrealshahfaiz/",
+        github: "https://github.com/mruniqers",
+        discord: "https://discord.com/invite/introlic"
+      }
+    };
+  }
 
   if (!authorObj && ["riddhi sinha", "riddhi"].includes(nameLower)) {
     authorObj = {

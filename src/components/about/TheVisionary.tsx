@@ -110,13 +110,13 @@ export default function TheVisionary() {
 
             {/* Social handle */}
             <a
-              href="https://x.com/MF9CODING"
+              href="https://x.com/MrUniqers"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 mt-8 text-[11px] font-black tracking-[0.3em] uppercase transition-opacity duration-200 hover:opacity-60"
               style={{ color: COLORS.brand.blue }}
             >
-              @MF9CODING
+              @MrUniqers
               <ArrowUpRight className="w-3 h-3" />
             </a>
           </motion.div>

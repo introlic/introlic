@@ -43,7 +43,7 @@ const teamMembers: Member[] = [
         hoverClass: "hover:border-[#1DA1F2]/60 hover:bg-[#1DA1F2]/15 hover:text-[#1DA1F2] hover:shadow-[0_0_15px_rgba(29,161,242,0.35)]"
       },
       { 
-        url: "https://www.linkedin.com/in/iamrealfaizshah/", 
+        url: "https://www.linkedin.com/in/iamrealshahfaiz/", 
         icon: LinkedinIcon, 
         label: "LinkedIn",
         hoverClass: "hover:border-[#0A66C2]/60 hover:bg-[#0A66C2]/15 hover:text-[#0A66C2] hover:shadow-[0_0_15px_rgba(10,102,194,0.35)]"
@@ -60,35 +60,53 @@ const teamMembers: Member[] = [
         label: "Instagram",
         hoverClass: "hover:border-[#E4405F]/60 hover:bg-[#E4405F]/15 hover:text-[#E4405F] hover:shadow-[0_0_15px_rgba(228,64,95,0.35)]"
       },
+      { 
+        url: "https://youtube.com/@channel", 
+        icon: YouTubeIcon, 
+        label: "YouTube",
+        hoverClass: "hover:border-[#FF0000]/60 hover:bg-[#FF0000]/15 hover:text-[#FF0000] hover:shadow-[0_0_15px_rgba(255,0,0,0.35)]"
+      },
+      { 
+        url: "https://discord.com/invite/introlic", 
+        icon: DiscordIcon, 
+        label: "Discord",
+        hoverClass: "hover:border-[#5865F2]/60 hover:bg-[#5865F2]/15 hover:text-[#5865F2] hover:shadow-[0_0_15px_rgba(88,101,242,0.35)]"
+      },
     ],
   },
   {
     id: "mr-faiz",
-    name: "mr.Faiz",
-    role: "Co-Founder",
-    subRole: "Research & Systems",
-    bio: "Pioneering efficient model architectures, parallel denoising paradigms, and kernel optimizations to build lightweight, high-throughput computational substrates.",
+    name: "SHAH  FAIZ",
+    role: "Founder",
+    subRole: "Systems Architect",
+    bio: "Founder & systems builder. Engineering sovereign digital systems from first principles, built without institutional backing or venture safety nets.",
     links: [
       { 
-        url: "https://x.com/MF9CODING", 
+        url: "https://x.com/MrUniqers", 
         icon: XIcon, 
         label: "X / Twitter",
         hoverClass: "hover:border-[#1DA1F2]/60 hover:bg-[#1DA1F2]/15 hover:text-[#1DA1F2] hover:shadow-[0_0_15px_rgba(29,161,242,0.35)]"
       },
       { 
-        url: "https://github.com/MF9CODING", 
+        url: "https://www.linkedin.com/in/iamrealshahfaiz/", 
+        icon: LinkedinIcon, 
+        label: "LinkedIn",
+        hoverClass: "hover:border-[#0A66C2]/60 hover:bg-[#0A66C2]/15 hover:text-[#0A66C2] hover:shadow-[0_0_15px_rgba(10,102,194,0.35)]"
+      },
+      { 
+        url: "https://github.com/mruniqers", 
         icon: GithubIcon, 
         label: "GitHub",
         hoverClass: "hover:border-white/70 hover:bg-white/15 hover:text-white hover:shadow-[0_0_15px_rgba(255,255,255,0.35)]"
       },
       { 
-        url: "https://www.instagram.com/MF9CODING/", 
+        url: "https://www.instagram.com/mr.uniqers/", 
         icon: InstagramIcon, 
         label: "Instagram",
         hoverClass: "hover:border-[#E4405F]/60 hover:bg-[#E4405F]/15 hover:text-[#E4405F] hover:shadow-[0_0_15px_rgba(228,64,95,0.35)]"
       },
       { 
-        url: "https://youtube.com/@MF9CODING", 
+        url: "https://youtube.com/@channel", 
         icon: YouTubeIcon, 
         label: "YouTube",
         hoverClass: "hover:border-[#FF0000]/60 hover:bg-[#FF0000]/15 hover:text-[#FF0000] hover:shadow-[0_0_15px_rgba(255,0,0,0.35)]"

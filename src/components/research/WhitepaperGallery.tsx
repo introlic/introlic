@@ -190,8 +190,8 @@ function CustomDropdown({ label, value, options, onChange, icon: Icon }: Dropdow
 
     const getAuthorDetails = (authorName: string) => {
       if (!authorName) return { authorObj: null, ageAndDOB: "" };
-      const nameLower = authorName.toLowerCase().trim();
-      const authorObj = authorsList.find(a => a.name.toLowerCase().trim() === nameLower);
+      const nameLower = authorName.toLowerCase().replace(/\s+/g, ' ').trim();
+      const authorObj = authorsList.find(a => a.name.toLowerCase().replace(/\s+/g, ' ').trim() === nameLower);
       if (!authorObj) return { authorObj: null, ageAndDOB: "" };
 
       let ageAndDOB = "";

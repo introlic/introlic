@@ -12,16 +12,16 @@ export async function GET() {
     // 2. Auto-seed if empty
     if (list.length === 0) {
       const defaultAuthor = {
-        name: "MR.Faiz",
-        dateOfBirth: "2009-03-26",
+        name: "SHAH  FAIZ",
+        dateOfBirth: null,
         bio: "Founder & systems builder. Engineering sovereign digital systems from first principles, built without institutional backing or venture safety nets.",
         avatar: null,
         socialLinks: {
-          twitter: "https://x.com/introlics",
-          instagram: "https://www.instagram.com/introlics/",
-          youtube: "https://youtube.com/@introlics",
-          linkedin: "https://www.linkedin.com/company/introlic",
-          github: "https://github.com/introlic",
+          twitter: "https://x.com/MrUniqers",
+          instagram: "https://www.instagram.com/mr.uniqers/",
+          youtube: "https://youtube.com/@channel",
+          linkedin: "https://www.linkedin.com/in/iamrealshahfaiz/",
+          github: "https://github.com/mruniqers",
           discord: "https://discord.com/invite/introlic"
         }
       };

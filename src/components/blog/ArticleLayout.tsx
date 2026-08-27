@@ -191,8 +191,8 @@ export default function ArticleLayout({ slug }: ArticleLayoutProps) {
   const Cover = post.cover;
   const postAuthorObj = useMemo(() => {
     if (!post || !post.author) return null;
-    const authorName = post.author.toLowerCase().trim();
-    return authorsList.find(a => a.name.toLowerCase().trim() === authorName);
+    const authorName = post.author.toLowerCase().replace(/\s+/g, ' ').trim();
+    return authorsList.find(a => a.name.toLowerCase().replace(/\s+/g, ' ').trim() === authorName);
   }, [post, authorsList]);
 
   const authorAgeAndDOB = useMemo(() => {
@@ -415,7 +415,7 @@ export default function ArticleLayout({ slug }: ArticleLayoutProps) {
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {post.contributors.map((contrib, idx) => {
                     const matchedAuthor = authorsList.find(
-                      a => a.name.toLowerCase().trim() === contrib.name.toLowerCase().trim()
+                      a => a.name.toLowerCase().replace(/\s+/g, ' ').trim() === contrib.name.toLowerCase().replace(/\s+/g, ' ').trim()
                     );
                     
                     const initials = contrib.name

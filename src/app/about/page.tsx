@@ -74,15 +74,9 @@ export default function AboutPage() {
                 "founders": [
                   {
                     "@type": "Person",
-                    "name": "Faiz Shah",
+                    "name": "SHAH  FAIZ",
                     "jobTitle": "Founder",
                     "sameAs": "https://x.com/MrUniqers"
-                  },
-                  {
-                    "@type": "Person",
-                    "name": "mr.Faiz",
-                    "jobTitle": "Co-Founder",
-                    "sameAs": "https://x.com/MF9CODING"
                   }
                 ],
                 "chiefExecutiveOfficer": {

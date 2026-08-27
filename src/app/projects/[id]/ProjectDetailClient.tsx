@@ -306,14 +306,22 @@ export default function ProjectDetailClient({ id, initialProject = null, initial
 
   const { authorObj, ageAndDOB } = useMemo(() => {
     if (!project?.author) return { authorObj: null, ageAndDOB: "" };
-    const nameLower = project.author.toLowerCase().trim();
-    let authorObj = authorsList.find(a => a.name.toLowerCase().trim() === nameLower);
+    const nameLower = project.author.toLowerCase().replace(/\s+/g, ' ').trim();
+    let authorObj = authorsList.find(a => a.name.toLowerCase().replace(/\s+/g, ' ').trim() === nameLower);
 
-    if (!authorObj && ["mr.faiz", "faiz", "mr. faiz", "mr faiz"].includes(nameLower)) {
+    if (!authorObj && ["mr.faiz", "faiz", "mr. faiz", "mr faiz", "shah faiz", "shah  faiz"].includes(nameLower)) {
       authorObj = {
-        name: "MR.Faiz", dateOfBirth: "2009-03-26",
-        bio: "Chief Architect, systems builder. Engineering sovereign digital systems from first principles, built without institutional backing or venture safety nets.",
-        socialLinks: { twitter: "https://x.com/MF9CODING", instagram: "https://www.instagram.com/MF9CODING/", youtube: "https://youtube.com/@MF9CODING", linkedin: "https://www.linkedin.com/in/mrfaiz", github: "https://github.com/MF9CODING", discord: "https://discord.com/invite/introlic" }
+        name: "SHAH  FAIZ",
+        dateOfBirth: null,
+        bio: "Founder & systems builder. Engineering sovereign digital systems from first principles, built without institutional backing or venture safety nets.",
+        socialLinks: {
+          twitter: "https://x.com/MrUniqers",
+          instagram: "https://www.instagram.com/mr.uniqers/",
+          youtube: "https://youtube.com/@channel",
+          linkedin: "https://www.linkedin.com/in/iamrealshahfaiz/",
+          github: "https://github.com/mruniqers",
+          discord: "https://discord.com/invite/introlic"
+        }
       };
     }
     if (!authorObj) return { authorObj: null, ageAndDOB: "" };
