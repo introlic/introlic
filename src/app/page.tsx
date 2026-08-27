@@ -9,9 +9,9 @@ import SovereignUplink from "@/components/SovereignUplink";
 
 export const metadata: Metadata = {
   title: {
-    absolute: "Introlic | Independent AI Research & Systems Lab"
+    absolute: "Introlic | Independent Technology Startup"
   },
-  description: "Introlic is an independent technology lab focused on Discrete Diffusion Language Models (DLMs), SEDD architectures, and sovereign AI systems. Founded in India, building for the world.",
+  description: "Introlic is an independent startup founded by mr.Faiz, focused on building websites, apps, and games to achieve global visibility, paving the way for our ultimate goal: foundational AI.",
   alternates: {
     canonical: "/",
   },

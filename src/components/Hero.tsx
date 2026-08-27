@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { heroContainer, heroItem } from '@/constants/animations';
 import { COLORS } from '@/constants/branding';
-import { Zap, BookOpen, ArrowRight, Cpu, Layers, Globe } from 'lucide-react';
+import { Zap, BookOpen, Cpu, Layers, Globe, Gamepad2, MonitorSmartphone } from 'lucide-react';
 
 const FluidBackground = dynamic(() => import('./FluidBackground'), {
   ssr: false,
@@ -49,7 +49,7 @@ export default function Hero() {
             <span
               className="text-[9.5px] sm:text-[11px] font-black tracking-[0.18em] sm:tracking-[0.3em] uppercase text-gray-700 sm:text-gray-500 font-mono sm:font-sans"
             >
-              INDEPENDENT AI RESEARCH & SYSTEMS LAB
+              INDEPENDENT TECHNOLOGY STARTUP
             </span>
           </div>
           
@@ -66,12 +66,12 @@ export default function Hero() {
             variants={heroItem}
             className="relative text-[1.95rem] xs:text-[2.2rem] sm:text-2xl md:text-[1.95rem] lg:text-[2.5rem] xl:text-[2.85rem] font-black tracking-tight sm:tracking-tightest leading-[1.18] sm:leading-tight text-center text-gray-900 sm:whitespace-nowrap max-w-[340px] xs:max-w-[400px] sm:max-w-none"
           >
-            <span className="block sm:inline">Engineering High-Performance </span>
+            <span className="block sm:inline">Building Websites, Apps, </span>
             <span 
               className="text-transparent bg-clip-text drop-shadow-[0_0_15px_rgba(0,163,255,0.3)] block sm:inline"
               style={{ backgroundImage: `linear-gradient(to bottom right, ${COLORS.brand.blue}, ${COLORS.brand.blueDeep}, ${COLORS.brand.blue})` }}
             >
-              AI & Software Systems.
+              Games &amp; Digital Experiences.
             </span>
           </motion.h1>
         </div>
@@ -82,16 +82,16 @@ export default function Hero() {
           className="flex sm:hidden items-center justify-center gap-1.5 flex-wrap my-3 select-none"
         >
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10.5px] font-medium bg-black/[0.04] text-gray-700 border border-black/[0.06]">
-            <Cpu className="w-3 h-3 text-[#00a3ff]" />
-            Discrete Diffusion (DLM)
+            <Globe className="w-3 h-3 text-[#00a3ff]" />
+            Web Apps
           </span>
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10.5px] font-medium bg-black/[0.04] text-gray-700 border border-black/[0.06]">
-            <Zap className="w-3 h-3 text-[#00a3ff]" />
-            SEDD Architectures
+            <MonitorSmartphone className="w-3 h-3 text-[#00a3ff]" />
+            Mobile Apps
           </span>
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10.5px] font-medium bg-black/[0.04] text-gray-700 border border-black/[0.06]">
-            <Layers className="w-3 h-3 text-[#00a3ff]" />
-            Sovereign AI Systems
+            <Gamepad2 className="w-3 h-3 text-[#00a3ff]" />
+            Games
           </span>
         </motion.div>
 
@@ -101,7 +101,7 @@ export default function Hero() {
             variants={heroItem}
             className="text-[0.92rem] sm:text-[1.05rem] md:text-[1.1rem] font-normal sm:font-medium text-gray-600 leading-[1.65] sm:leading-[1.7] max-w-[650px] mb-4 sm:mb-5 text-center px-1 sm:px-0"
           >
-            Introlic is an independent technology lab focused on Discrete Diffusion Language Models (DLMs), SEDD architectures, and sovereign AI systems. We build self-correcting, unconstrained technology from first principles.
+            Introlic is an independent technology startup founded by mr.Faiz. We build high-impact websites, apps, and games that people love to use today. Our ultimate goal? Once we achieve global visibility and traction, we will scale our infrastructure to build the next generation of Artificial Intelligence.
           </motion.p>
 
           {/* Tag */}
@@ -135,11 +135,11 @@ export default function Hero() {
 
           {/* Secondary: Direct Link to Documentation */}
           <Link
-            href="/docs"
+            href="/projects"
             className="group flex items-center justify-center gap-2.5 sm:gap-3 h-[48px] sm:h-[54px] w-full sm:w-[240px] rounded-full text-[14px] sm:text-[15px] font-bold text-gray-800 sm:text-gray-700 border border-gray-300/80 sm:border-gray-200 bg-white/90 sm:bg-white/80 backdrop-blur-md transition-all duration-300 hover:border-gray-400 hover:text-black hover:bg-white active:scale-95 shadow-sm"
           >
-            <BookOpen className="w-4 h-4 text-gray-500 group-hover:text-black transition-colors duration-300" />
-            <span>Introlic Documentation</span>
+            <Layers className="w-4 h-4 text-gray-500 group-hover:text-black transition-colors duration-300" />
+            <span>View Our Products</span>
           </Link>
         </motion.div>
 

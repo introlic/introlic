@@ -8,33 +8,33 @@ import { fadeUp } from '@/constants/animations';
 const pillars = [
   {
     index: '01',
-    tag: 'Discrete Diffusion',
-    headline: 'Investigating non-autoregressive language models built on SEDD.',
-    body: 'Exploring Score Entropy Discrete Diffusion (SEDD) architectures to move beyond sequential token-by-token generation. By refining thoughts bidirectionally, these models possess an innate ability to catch and self-correct reasoning mistakes during generation.',
+    tag: 'Web & Mobile Apps',
+    headline: 'Building consumer applications that achieve rapid user adoption.',
+    body: 'Developing and scaling websites and mobile apps that solve real problems. Our focus is on frictionless UX, high performance, and rapid deployment to capture market share and validate product-market fit.',
   },
   {
     index: '02',
-    tag: 'Compute Efficiency',
-    headline: 'Optimizing training schedules under severe compute constraints.',
-    body: 'Developing sample-efficient corruption schedules and noise optimizations to test whether discrete diffusion can be trained effectively without multi-million-dollar clusters.',
+    tag: 'Interactive Games',
+    headline: 'Developing games and digital tools that engage users globally.',
+    body: 'Building interactive experiences that captivate users and generate viral growth. By focusing on entertainment and engagement, we create sticky products that bring massive visibility to our brand.',
   },
   {
     index: '03',
-    tag: '220M Prototype',
-    headline: 'Empirical testing with our 220M-parameter SEDD benchmark.',
-    body: 'Pre-training an initial 220M prototype to collect empirical evidence on loss convergence, self-correction fidelity, and compute trade-offs compared to autoregressive baselines.',
+    tag: 'The Visibility Engine',
+    headline: 'Using our products to build a brand, audience, and revenue stream.',
+    body: 'Every app, website, and game we build is a step towards our larger goal. They serve as an engine to generate the visibility, user base, and financial leverage needed to scale our infrastructure.',
   },
   {
     index: '04',
-    tag: 'IN1 Initiative',
-    headline: 'Cultivating open foundational AI research in India.',
-    body: 'Through the IN1 initiative, we encourage young Indian engineers to look under the hood—reproducing, questioning, and building upon frontier AI research rather than only consuming APIs.',
+    tag: 'The Ultimate AI Goal',
+    headline: 'Preparing the groundwork for when we have the capital to train frontier models.',
+    body: 'We are not abandoning AI; we are being smart about it. Once our products generate the necessary traction and funding, we will scale our infrastructure to build the next generation of foundational Artificial Intelligence.',
   },
   {
     index: '05',
-    tag: 'Open Science',
-    headline: 'Publishing raw loss curves, code, and benchmark papers openly.',
-    body: 'We believe genuine scientific progress requires total transparency. We openly share our checkpoints, training pipelines, and negative findings so the broader community can learn and build upon our work.',
+    tag: 'Total Transparency',
+    headline: 'Sharing our learnings, tools, and startup journey openly.',
+    body: 'We believe genuine progress requires total transparency. We openly share our journey, engineering challenges, and insights so the broader community can learn and build alongside us.',
   },
 ];
 
@@ -129,9 +129,7 @@ export default function OurVision() {
 
           <motion.div variants={fadeUp} className="lg:col-span-5 pb-2">
             <p className="text-base sm:text-lg text-gray-500 font-medium leading-relaxed border-l border-white/10 pl-5 sm:pl-8">
-              We are not building another model. We are engineering the infrastructure layer that brings
-              Parallel Intelligence into production — with the precision of native systems and the ambition
-              of a generation that refuses the ceiling.
+              We are building high-impact digital products to create a massive footprint. With visibility comes leverage. We use that leverage to fund and build the future of AI.
             </p>
           </motion.div>
         </motion.div>
@@ -152,10 +150,10 @@ export default function OurVision() {
           className="mt-10 md:mt-24 grid grid-cols-4 gap-px overflow-hidden rounded-2xl border border-white/[0.05] bg-white/[0.05]"
         >
           {[
-            { value: '100%', label: 'Independent Tech Stack' },
-            { value: 'Zero', label: 'Foreign API Dependency' },
-            { value: 'Limitless', label: 'Scaling Potential' },
-            { value: 'Global', label: 'Deployment Radius' },
+            { value: '1M+', label: 'Target Audience' },
+            { value: 'Zero', label: 'Wasted Capital' },
+            { value: 'Global', label: 'Product Reach' },
+            { value: 'AI Lab', label: 'Ultimate Goal' },
           ].map((stat) => (
             <div
               key={stat.label}

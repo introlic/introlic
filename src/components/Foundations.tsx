@@ -2,40 +2,40 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FlaskConical } from 'lucide-react';
+import { Target } from 'lucide-react';
 import { staggerContainer, staggerItem } from '@/constants/animations';
 import { COLORS } from '@/constants/branding';
 
 const principles = [
   {
     index: "01",
-    tag: "RESEARCH",
-    title: "Foundational Architecture",
-    text: "Investigating alternative architectures like Discrete Diffusion (SEDD) to overcome sequential generation limits and explore real-time self-correcting reasoning."
+    tag: "PRODUCTS",
+    title: "Websites, Apps, & Games",
+    text: "Building digital products that solve real problems and engage users today, establishing a strong brand and audience."
   },
   {
     index: "02",
     tag: "EFFICIENCY",
-    title: "Compute-Performance Optimization",
-    text: "Focusing on noise schedule optimizations and sample-efficient training configurations to maximize model performance under constrained compute budgets."
+    title: "Capital Efficiency",
+    text: "Focusing on product-market fit, traction, and revenue instead of burning money on unnecessary compute before we have a user base."
   },
   {
     index: "03",
-    tag: "SELF-CORRECTION",
-    title: "Bidirectional Generation",
-    text: "Developing models that refine entire sequences simultaneously, catching and fixing reasoning inconsistencies during generation."
+    tag: "STRATEGY",
+    title: "The Visibility Engine",
+    text: "Using our software products to build massive global visibility, creating the leverage and funding needed for our ultimate goals."
   },
   {
     index: "04",
-    tag: "TRANSPARENCY",
-    title: "Open Empirical Research",
-    text: "Publishing raw loss curves, negative findings, benchmark evaluations, and open-weights under the IN1 initiative."
+    tag: "THE FUTURE",
+    title: "Foundational AI",
+    text: "Keeping our long-term R&D vision alive. Once we hit our scale targets, we will invest our leverage into training the next generation of AI."
   },
   {
     index: "05",
     tag: "CAPACITY",
     title: "Deep-Tech from India",
-    text: "Cultivating foundational AI research capacity in India so engineers can understand, modify, and build frontier models from first principles."
+    text: "Proving that world-class consumer and developer software can be built from the ground up in India, competing on a global stage."
   }
 ];
 
@@ -58,7 +58,7 @@ export default function Foundations() {
         >
           <motion.div variants={staggerItem} className="flex items-center gap-4 mb-6">
             <div className="w-12 h-[1px]" style={{ backgroundColor: `${COLORS.brand.blue}66` }} />
-            <span className="font-black tracking-[0.3em] uppercase text-xs" style={{ color: COLORS.brand.blue }}>Foundation Architecture</span>
+            <span className="font-black tracking-[0.3em] uppercase text-xs" style={{ color: COLORS.brand.blue }}>Our Master Plan</span>
           </motion.div>
           <motion.h2 variants={staggerItem} className="text-4xl sm:text-5xl md:text-8xl font-black text-white tracking-tighter leading-[0.9] max-w-4xl">
             Born in India.<br />
@@ -95,37 +95,30 @@ export default function Foundations() {
             <motion.p variants={staggerItem} className="text-base sm:text-lg md:text-xl text-gray-500 font-medium leading-relaxed">
               That question became an obsession. Starting with just a computer and an internet connection,
               mr.Faiz taught himself programming through YouTube and ChatGPT, built and shipped live platforms,
-              scaled to 13,000 monthly users, learned exactly why most Indian tech companies hit a ceiling, 
-              and decided to attack the root cause instead of the surface.
+              scaled to 13,000 monthly users, and learned exactly why most startups hit a ceiling.
             </motion.p>
 
             <motion.p variants={staggerItem} className="text-base sm:text-lg md:text-xl text-gray-500 font-medium leading-relaxed">
-              The ceiling for Indian tech isn&apos;t talent. It is{' '}
-              <span className="text-white font-semibold">architecture dependency.</span>{' '}
-              Most companies here build services and products on top of foreign AI infrastructure they do not control.
-              Introlic was founded to close that gap — not by copying what already exists, but by engineering a better
-              substrate from the mathematical ground up.
+              You can&apos;t train frontier AI with just passion—it requires massive capital. Most startups burn their funding trying to build AI before they have users. At Introlic, we are doing it differently. We build websites, apps, and games first to build an audience and revenue. Once we have the visibility, we will build the AI.
             </motion.p>
 
             {/* Technology we're using */}
             <motion.div variants={staggerItem} className="mt-4 p-5 sm:p-8 rounded-2xl bg-white/[0.02] border border-white/[0.06]">
               <div className="flex items-center gap-2 sm:gap-3 mb-4 sm:mb-5">
-                <FlaskConical className="w-4 h-4 sm:w-5 sm:h-5 text-[#00a3ff]" />
-                <span className="text-[10px] sm:text-xs font-black text-[#00a3ff] uppercase tracking-[0.2em] sm:tracking-[0.25em]">Technology Foundation</span>
+                <Target className="w-4 h-4 sm:w-5 sm:h-5 text-[#00a3ff]" />
+                <span className="text-[10px] sm:text-xs font-black text-[#00a3ff] uppercase tracking-[0.2em] sm:tracking-[0.25em]">Strategic Focus</span>
               </div>
               <h3 className="text-lg sm:text-2xl font-black text-white mb-2 sm:mb-3 tracking-tight">
-                Discrete Diffusion &amp; SEDD Paradigms
+                The Visibility-First Roadmap
               </h3>
               <p className="text-xs sm:text-base text-gray-400 leading-relaxed mb-5 sm:mb-6">
-                We are exploring model architectures based on <span className="text-white font-semibold">Discrete Diffusion Language Models (DLMs) and Score Entropy Discrete Diffusion (SEDD)</span>. 
-                Our research focuses on shifting away from standard autoregressive left-to-right token generation to build highly efficient, 
-                self-correcting language models that fix errors during generation and scale context with minimal computational footprint.
+                Our immediate focus is on fast execution in web, mobile, and gaming. We are building consumer-facing products that achieve rapid user adoption, creating the leverage needed to fund our future foundational AI research.
               </p>
               <div className="grid grid-cols-3 gap-2 sm:gap-4">
                 {[
-                  { metric: 'DLM / SEDD', label: 'Discrete Diffusion' },
-                  { metric: 'Self-Correcting', label: 'Real-Time Denoising' },
-                  { metric: 'Linear O(N)', label: 'Context Scaling' },
+                  { metric: '1M+', label: 'Target Users' },
+                  { metric: 'Global', label: 'Visibility' },
+                  { metric: 'AI Lab', label: 'Ultimate Goal' },
                 ].map((s) => (
                   <div key={s.label} className="bg-white/[0.02] rounded-xl p-3 sm:p-4 border border-white/[0.04] flex flex-col justify-center">
                     <div className="text-[12px] sm:text-xl font-black text-[#00a3ff] leading-tight">{s.metric}</div>
@@ -200,7 +193,7 @@ export default function Foundations() {
         >
           <Milestone year="2019" label="Curiosity Sparked" />
           <Milestone year="2024" label="The Strategic Dropout" />
-          <Milestone year="2025" label="DeepSeek Realization" />
+          <Milestone year="2025" label="Traction Realization" />
           <Milestone year="2026" label="Introlic Founded" />
         </motion.div>
       </div>
