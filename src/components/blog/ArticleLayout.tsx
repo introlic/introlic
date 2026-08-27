@@ -526,10 +526,16 @@ export default function ArticleLayout({ slug }: ArticleLayoutProps) {
                   
                   <div className="relative z-10 flex flex-col gap-4">
                     <div className="flex items-center gap-3">
-                      {/* Avatar Initials */}
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00a3ff]/20 to-[#00d1ff]/10 border border-[#00a3ff]/30 flex items-center justify-center text-white font-black text-sm select-none shadow-[0_4px_12px_rgba(0,163,255,0.15)]">
-                        {postAuthorObj.name ? postAuthorObj.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) : 'A'}
-                      </div>
+                      {/* Avatar Image / Initials */}
+                      {postAuthorObj.avatar || postAuthorObj.avatarUrl ? (
+                        <div className="w-12 h-12 rounded-xl overflow-hidden border border-[#00a3ff]/30 shrink-0 bg-black shadow-[0_4px_12px_rgba(0,163,255,0.15)]">
+                          <img src={postAuthorObj.avatar || postAuthorObj.avatarUrl} alt={postAuthorObj.name} className="w-full h-full object-cover" />
+                        </div>
+                      ) : (
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00a3ff]/20 to-[#00d1ff]/10 border border-[#00a3ff]/30 flex items-center justify-center text-white font-black text-sm select-none shadow-[0_4px_12px_rgba(0,163,255,0.15)]">
+                          {postAuthorObj.name ? postAuthorObj.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) : 'A'}
+                        </div>
+                      )}
                       <div className="flex flex-col">
                         <h4 className="text-sm font-black text-white tracking-tight">{postAuthorObj.name}</h4>
                         {authorAgeAndDOB && (
@@ -636,10 +642,16 @@ export default function ArticleLayout({ slug }: ArticleLayoutProps) {
                     <p className="text-[9px] font-mono text-gray-600 tracking-[0.3em] uppercase">About the Author</p>
                     
                     <div className="flex items-center gap-3">
-                      {/* Avatar Initials */}
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00a3ff]/20 to-[#00d1ff]/10 border border-[#00a3ff]/30 flex items-center justify-center text-white font-black text-sm select-none shadow-[0_4px_12px_rgba(0,163,255,0.15)]">
-                        {postAuthorObj.name ? postAuthorObj.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) : 'A'}
-                      </div>
+                      {/* Avatar Image / Initials */}
+                      {postAuthorObj.avatar || postAuthorObj.avatarUrl ? (
+                        <div className="w-12 h-12 rounded-xl overflow-hidden border border-[#00a3ff]/30 shrink-0 bg-black shadow-[0_4px_12px_rgba(0,163,255,0.15)]">
+                          <img src={postAuthorObj.avatar || postAuthorObj.avatarUrl} alt={postAuthorObj.name} className="w-full h-full object-cover" />
+                        </div>
+                      ) : (
+                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00a3ff]/20 to-[#00d1ff]/10 border border-[#00a3ff]/30 flex items-center justify-center text-white font-black text-sm select-none shadow-[0_4px_12px_rgba(0,163,255,0.15)]">
+                          {postAuthorObj.name ? postAuthorObj.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) : 'A'}
+                        </div>
+                      )}
                       
                       <div className="flex flex-col">
                         <h4 className="text-sm font-black text-white tracking-tight">{postAuthorObj.name}</h4>

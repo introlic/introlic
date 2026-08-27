@@ -2,7 +2,11 @@
  
  import React, { useState, useMemo, useRef, useEffect } from 'react';
  import { motion, AnimatePresence } from 'framer-motion';
- import { BookOpen, ChevronUp, Search, Grid, List, ChevronDown, Calendar, User, X, Download, Users, ArrowUpDown, Check, SlidersHorizontal, Link2, ArrowUpRight } from 'lucide-react';
+ import { 
+  BookOpen, ChevronUp, Search, Grid, List, ChevronDown, Calendar, User, X, 
+  Download, Users, ArrowUpDown, Check, SlidersHorizontal, Link2, ArrowUpRight,
+  ArrowRight, FlaskConical, Sparkles, Activity, BadgeCheck, Eye, FileText
+} from 'lucide-react';
  import Link from 'next/link';
  import { XIcon, LinkedinIcon, GithubIcon, InstagramIcon, YouTubeIcon, DiscordIcon } from '../SocialIcons';
  
@@ -22,6 +26,13 @@
    showContributors?: boolean;
    contributors?: { name: string; role?: string }[];
  }
+
+const TYPE_STYLES: Record<string, { bg: string; text: string; dot: string; border: string }> = {
+  Publication: { bg: "rgba(0,163,255,0.08)",   text: "#00a3ff", dot: "#00a3ff",  border: "rgba(0,163,255,0.25)"   },
+  Milestone:   { bg: "rgba(168,85,247,0.08)",  text: "#a855f7", dot: "#a855f7",  border: "rgba(168,85,247,0.25)"  },
+  Release:     { bg: "rgba(16,185,129,0.08)",  text: "#10b981", dot: "#10b981",  border: "rgba(16,185,129,0.25)"  },
+  Conclusion:  { bg: "rgba(245,158,11,0.08)",  text: "#f59e0b", dot: "#f59e0b",  border: "rgba(245,158,11,0.25)"  },
+};
  
 const papers: ResearchPaper[] = [];
 
@@ -191,7 +202,25 @@ function CustomDropdown({ label, value, options, onChange, icon: Icon }: Dropdow
     const getAuthorDetails = (authorName: string) => {
       if (!authorName) return { authorObj: null, ageAndDOB: "" };
       const nameLower = authorName.toLowerCase().replace(/\s+/g, ' ').trim();
-      const authorObj = authorsList.find(a => a.name.toLowerCase().replace(/\s+/g, ' ').trim() === nameLower);
+      let authorObj = authorsList.find(a => a.name.toLowerCase().replace(/\s+/g, ' ').trim() === nameLower);
+
+      if (!authorObj && ["mr.faiz", "faiz", "mr. faiz", "mr faiz", "shah faiz", "shah  faiz"].includes(nameLower)) {
+        authorObj = {
+          name: "SHAH  FAIZ",
+          avatar: null,
+          dateOfBirth: null,
+          bio: "Founder & systems builder. Engineering sovereign digital systems from first principles, built without institutional backing or venture safety nets.",
+          socialLinks: {
+            twitter: "https://x.com/MrUniqers",
+            instagram: "https://www.instagram.com/mr.uniqers/",
+            youtube: "https://youtube.com/@channel",
+            linkedin: "https://www.linkedin.com/in/iamrealshahfaiz/",
+            github: "https://github.com/mruniqers",
+            discord: "https://discord.com/invite/introlic"
+          }
+        };
+      }
+
       if (!authorObj) return { authorObj: null, ageAndDOB: "" };
 
       let ageAndDOB = "";
@@ -219,6 +248,8 @@ function CustomDropdown({ label, value, options, onChange, icon: Icon }: Dropdow
       const { authorObj, ageAndDOB } = getAuthorDetails(authorName);
       if (!authorObj) return null;
 
+      const avatarUrl = authorObj.avatar || authorObj.avatarUrl || authorObj.imageUrl;
+
       return (
         <div className="mt-12 p-6 rounded-2xl bg-[#09090a]/50 border border-white/[0.06] overflow-hidden group shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)] max-w-xl text-left relative">
           {/* Subtle background gradient glow */}
@@ -228,10 +259,16 @@ function CustomDropdown({ label, value, options, onChange, icon: Icon }: Dropdow
             <p className="text-[9px] font-mono text-[#00a3ff] tracking-[0.3em] uppercase">Document Author Profile</p>
             
             <div className="flex items-center gap-3">
-              {/* Avatar Initials */}
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00a3ff]/20 to-[#00d1ff]/10 border border-[#00a3ff]/30 flex items-center justify-center text-white font-black text-sm select-none shadow-[0_4px_12px_rgba(0,163,255,0.15)]">
-                {authorObj.name ? authorObj.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) : 'A'}
-              </div>
+              {/* Avatar Image / Initials */}
+              {avatarUrl ? (
+                <div className="w-12 h-12 rounded-xl overflow-hidden border border-[#00a3ff]/30 shrink-0 bg-black shadow-[0_4px_12px_rgba(0,163,255,0.15)]">
+                  <img src={avatarUrl} alt={authorObj.name} className="w-full h-full object-cover" />
+                </div>
+              ) : (
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00a3ff]/20 to-[#00d1ff]/10 border border-[#00a3ff]/30 flex items-center justify-center text-white font-black text-sm select-none shadow-[0_4px_12px_rgba(0,163,255,0.15)]">
+                  {authorObj.name ? authorObj.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) : 'A'}
+                </div>
+              )}
               
               <div className="flex flex-col">
                 <h4 className="text-sm font-black text-white tracking-tight">{authorObj.name}</h4>
@@ -348,7 +385,7 @@ function CustomDropdown({ label, value, options, onChange, icon: Icon }: Dropdow
    }, [searchQuery, activeCategory, selectedAuthor, sortBy, allPapersList]);
  
    const [currentPage, setCurrentPage] = useState(1);
-   const ITEMS_PER_PAGE = 3;
+   const ITEMS_PER_PAGE = 6;
  
    const totalPages = Math.ceil(processedPapers.length / ITEMS_PER_PAGE);
  
@@ -539,140 +576,197 @@ function CustomDropdown({ label, value, options, onChange, icon: Icon }: Dropdow
                <p className="text-gray-500 text-sm font-semibold tracking-wider uppercase font-mono">No research dispatches found matching filters.</p>
              </motion.div>
            ) : viewLayout === 'list' ? (
-             /* LIST VIEW */
-             <motion.div
-               key="list-layout"
-               initial={{ opacity: 0 }}
-               animate={{ opacity: 1 }}
-               exit={{ opacity: 0 }}
-               className="flex flex-col gap-px bg-white/5 border border-white/5 rounded-[32px] overflow-hidden"
-             >
+              /* LIST VIEW */
+              <motion.div
+                key="list-layout"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex flex-col gap-4"
+              >
                 {paginatedPapers.map((paper) => {
-                  const isExpanded = expandedPaper === paper.id;
+                  const typeStyle = TYPE_STYLES[paper.type] || TYPE_STYLES.Publication;
+                  const { authorObj } = getAuthorDetails(paper.author);
+                  const avatarUrl = authorObj?.avatar || authorObj?.avatarUrl || authorObj?.imageUrl;
+                  const initials = paper.author
+                    ? paper.author.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2)
+                    : "A";
+
                   return (
                     <div 
                       key={paper.id}
-                      className="group bg-[#050505] p-5 sm:p-8 md:p-12 transition-all duration-500 border-b border-white/[0.02] relative cursor-pointer"
+                      className="group relative rounded-3xl border border-white/[0.08] bg-[#07070b]/90 backdrop-blur-2xl p-6 sm:p-8 hover:border-[#00a3ff]/40 shadow-[0_20px_50px_rgba(0,0,0,0.6)] hover:shadow-[0_20px_50px_rgba(0,163,255,0.1)] transition-all duration-500 overflow-hidden"
                     >
-                       {/* Prefetching Link Overlay covering entire row */}
-                       <Link href={`/research/${paper.id}`} className="absolute inset-0 z-10" aria-label={`Read details of ${paper.title}`} />
+                      {/* Top ambient highlight line */}
+                      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#00a3ff]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      
+                      {/* Prefetching Link Overlay covering entire row */}
+                      <Link href={`/research/${paper.id}`} className="absolute inset-0 z-10" aria-label={`Read details of ${paper.title}`} />
 
-                       <div className="flex flex-col lg:flex-row lg:items-center gap-10 relative z-0">
-                          <div className="flex-1">
-                             <div className="flex flex-wrap items-center gap-4 mb-4 font-mono text-[9px] tracking-widest uppercase text-gray-500">
-                                <span className="text-[#00a3ff] font-bold">{paper.id}</span>
-                                <span>·</span>
-                                <span className="text-gray-600 font-bold">{paper.type}</span>
-                                <span>·</span>
-                                <div className="flex items-center gap-1">
-                                  <User className="w-3 h-3 text-gray-700" />
-                                  <span>{paper.author}</span>
+                      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-0">
+                        <div className="flex-1 space-y-4">
+                          {/* Metadata row */}
+                          <div className="flex flex-wrap items-center gap-3">
+                            <span className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/[0.04] border border-white/[0.08] text-[10px] font-mono font-bold text-[#00a3ff] uppercase tracking-wider">
+                              <FlaskConical className="w-3 h-3 text-[#00a3ff]" />
+                              {paper.id}
+                            </span>
+
+                            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-lg border text-[10px] font-mono font-bold tracking-wider uppercase"
+                              style={{ background: typeStyle.bg, color: typeStyle.text, borderColor: typeStyle.border }}>
+                              <span className="w-1.5 h-1.5 rounded-full" style={{ background: typeStyle.dot }} />
+                              {paper.type}
+                            </span>
+
+                            {/* Author */}
+                            <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-white/[0.02] border border-white/[0.05]">
+                              {avatarUrl ? (
+                                <img src={avatarUrl} alt={paper.author} className="w-4 h-4 rounded-full object-cover border border-[#00a3ff]/40" />
+                              ) : (
+                                <div className="w-4 h-4 rounded-full bg-[#00a3ff]/20 text-[#00a3ff] text-[8px] font-bold flex items-center justify-center font-mono">
+                                  {initials}
                                 </div>
-                             </div>
-                             <h3 className="text-2xl md:text-3xl font-black text-white tracking-tighter mb-4 group-hover:text-[#00a3ff] transition-colors">
-                                {paper.title}
-                             </h3>
-                             {paper.keywords && paper.keywords.length > 0 && (
-                               <div className="flex flex-wrap gap-2.5 mb-4">
-                                 {paper.keywords.map((kw, i) => (
-                                   <span key={i} className="text-[9px] font-mono text-[#00a3ff]/70 bg-[#00a3ff]/05 border border-[#00a3ff]/10 px-2 py-0.5 rounded">
-                                     #{kw}
-                                   </span>
-                                 ))}
-                               </div>
-                             )}
-                             <p className="text-gray-400 text-sm md:text-base font-medium leading-relaxed max-w-3xl line-clamp-2">
-                                {paper.abstract}
-                             </p>
+                              )}
+                              <span className="text-[10px] font-mono text-gray-300 font-semibold">{paper.author}</span>
+                            </div>
                           </div>
-                          
-                          <div className="flex items-center gap-8 border-t lg:border-t-0 lg:border-l border-white/5 pt-8 lg:pt-0 lg:pl-12">
-                             <div className="flex flex-col text-right hidden sm:flex font-mono">
-                                <span className="text-[9px] font-black text-gray-700 uppercase tracking-widest leading-none mb-1">Release</span>
-                                <span className="text-sm font-black text-white uppercase">{paper.date}</span>
-                             </div>
-                             <div 
-                                className="flex items-center gap-3 px-6 py-4 bg-white/[0.03] border border-white/10 rounded-2xl hover:bg-white/5 hover:border-[#00a3ff]/30 hover:text-[#00a3ff] transition-all group/btn cursor-pointer relative z-20 pointer-events-none"
-                             >
-                                <BookOpen className="w-5 h-5 text-gray-500 group-hover/btn:text-[#00a3ff] transition-colors" />
-                                <span className="text-xs font-black uppercase tracking-widest">Read Dispatch</span>
-                             </div>
+
+                          <h3 className="text-2xl md:text-3xl font-black text-white tracking-tight group-hover:text-[#00a3ff] transition-colors">
+                            {paper.title}
+                          </h3>
+
+                          {paper.keywords && paper.keywords.length > 0 && (
+                            <div className="flex flex-wrap gap-2">
+                              {paper.keywords.map((kw, i) => (
+                                <span key={i} className="px-2.5 py-0.5 rounded-md bg-white/[0.02] border border-white/[0.06] text-[10px] font-mono font-bold text-gray-400 group-hover:border-[#00a3ff]/20 group-hover:text-[#00a3ff] transition-colors">
+                                  #{kw}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+
+                          <p className="text-gray-400 text-xs sm:text-sm font-normal leading-relaxed line-clamp-2 max-w-4xl">
+                            {paper.abstract}
+                          </p>
+                        </div>
+
+                        {/* Action column */}
+                        <div className="flex sm:flex-row lg:flex-col items-start sm:items-center lg:items-end justify-between sm:justify-start gap-4 shrink-0 border-t lg:border-t-0 lg:border-l border-white/[0.06] pt-4 lg:pt-0 lg:pl-8">
+                          <div className="flex flex-col text-left lg:text-right font-mono">
+                            <span className="text-[9px] font-black text-gray-500 uppercase tracking-widest leading-none mb-1 flex items-center gap-1 lg:justify-end">
+                              <Calendar className="w-3 h-3 text-[#00a3ff]" />
+                              Release
+                            </span>
+                            <span className="text-xs font-bold text-white uppercase">{paper.date}</span>
                           </div>
-                       </div>
+
+                          <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.08] group-hover:border-[#00a3ff]/40 group-hover:bg-[#00a3ff]/10 group-hover:text-[#00a3ff] text-gray-300 transition-all text-xs font-bold font-mono uppercase tracking-wider">
+                            <span>Read Paper</span>
+                            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   );
                 })}
-             </motion.div>
-           ) : (
-             /* GRID VIEW */
-             <motion.div
-               key="grid-layout"
-               initial={{ opacity: 0 }}
-               animate={{ opacity: 1 }}
-               exit={{ opacity: 0 }}
-               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-             >
-                {paginatedPapers.map((paper) => (
-                  <div 
-                    key={paper.id}
-                    className="group bg-[#050505] hover:bg-[#07070a] border border-white/5 hover:border-[#00a3ff]/30 p-5 sm:p-8 rounded-[24px] flex flex-col justify-between min-h-[360px] transition-all duration-500 relative cursor-pointer"
-                  >
-                    {/* Corner accents */}
-                    <div className="absolute top-0 left-0 w-2.5 h-2.5 border-t border-l border-white/10 group-hover:border-[#00a3ff]/30 transition-colors z-10" />
-                    <div className="absolute top-0 right-0 w-2.5 h-2.5 border-t border-r border-white/10 group-hover:border-[#00a3ff]/30 transition-colors z-10" />
-                    <div className="absolute bottom-0 left-0 w-2.5 h-2.5 border-b border-l border-white/10 group-hover:border-[#00a3ff]/30 transition-colors z-10" />
-                    <div className="absolute bottom-0 right-0 w-2.5 h-2.5 border-b border-r border-white/10 group-hover:border-[#00a3ff]/30 transition-colors z-10" />
- 
-                    {/* Prefetching Link Overlay covering entire card */}
-                    <Link href={`/research/${paper.id}`} className="absolute inset-0 z-10" aria-label={`Read details of ${paper.title}`} />
+              </motion.div>
+            ) : (
+              /* GRID VIEW */
+              <motion.div
+                key="grid-layout"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              >
+                {paginatedPapers.map((paper) => {
+                  const typeStyle = TYPE_STYLES[paper.type] || TYPE_STYLES.Publication;
+                  const { authorObj } = getAuthorDetails(paper.author);
+                  const avatarUrl = authorObj?.avatar || authorObj?.avatarUrl || authorObj?.imageUrl;
+                  const initials = paper.author
+                    ? paper.author.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2)
+                    : "A";
 
-                    <div className="space-y-4">
-                      <div className="flex justify-between items-center font-mono text-[8px] tracking-widest uppercase text-gray-500">
-                        <span className="text-[#00a3ff] font-bold">{paper.id}</span>
-                        <span className="bg-white/5 border border-white/10 px-2.5 py-0.5 rounded-sm">{paper.type}</span>
+                  return (
+                    <div 
+                      key={paper.id}
+                      className="group relative rounded-3xl border border-white/[0.08] bg-[#07070b]/90 backdrop-blur-2xl p-6 sm:p-7 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.6)] hover:border-[#00a3ff]/40 hover:shadow-[0_20px_50px_rgba(0,163,255,0.12)] transition-all duration-500 overflow-hidden"
+                    >
+                      {/* Top ambient highlight line */}
+                      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#00a3ff]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                      {/* Prefetching Link Overlay covering entire card */}
+                      <Link href={`/research/${paper.id}`} className="absolute inset-0 z-10" aria-label={`Read details of ${paper.title}`} />
+
+                      <div className="space-y-4 relative z-0">
+                        {/* Header: ID + Status Type Pill */}
+                        <div className="flex justify-between items-center gap-2">
+                          <span className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/[0.04] border border-white/[0.08] text-[10px] font-mono font-bold text-[#00a3ff] uppercase tracking-wider">
+                            <FlaskConical className="w-3 h-3 text-[#00a3ff]" />
+                            {paper.id}
+                          </span>
+
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg border text-[10px] font-mono font-bold tracking-wider uppercase"
+                            style={{ background: typeStyle.bg, color: typeStyle.text, borderColor: typeStyle.border }}>
+                            <span className="w-1.5 h-1.5 rounded-full" style={{ background: typeStyle.dot }} />
+                            {paper.type}
+                          </span>
+                        </div>
+
+                        {/* Author strip */}
+                        <div className="flex items-center gap-2.5 pt-1">
+                          {avatarUrl ? (
+                            <img src={avatarUrl} alt={paper.author} className="w-6 h-6 rounded-lg object-cover border border-[#00a3ff]/30 shadow-sm" />
+                          ) : (
+                            <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-[#00a3ff]/20 to-[#00d1ff]/10 border border-[#00a3ff]/30 flex items-center justify-center text-[#00a3ff] font-bold text-[9px] font-mono shrink-0 select-none">
+                              {initials}
+                            </div>
+                          )}
+                          <div className="flex items-center gap-1 min-w-0">
+                            <span className="text-xs font-bold text-white truncate tracking-tight">{paper.author}</span>
+                            <BadgeCheck className="w-3.5 h-3.5 text-[#00a3ff] shrink-0" />
+                          </div>
+                        </div>
+
+                        {/* Title */}
+                        <h3 className="text-xl font-black text-white tracking-tight leading-snug line-clamp-2 group-hover:text-[#00a3ff] transition-colors pt-1">
+                          {paper.title}
+                        </h3>
+
+                        {/* Keywords */}
+                        {paper.keywords && paper.keywords.length > 0 && (
+                          <div className="flex flex-wrap gap-1.5 pt-1">
+                            {paper.keywords.slice(0, 4).map((kw, i) => (
+                              <span key={i} className="px-2 py-0.5 rounded-md bg-white/[0.02] border border-white/[0.06] text-[9px] font-mono font-bold text-gray-400 group-hover:border-[#00a3ff]/25 group-hover:text-[#00a3ff] transition-colors">
+                                #{kw}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
+                        {/* Abstract excerpt */}
+                        <p className="text-gray-400 text-xs font-normal leading-relaxed line-clamp-3 bg-white/[0.02] border border-white/[0.04] rounded-2xl p-3.5">
+                          {paper.abstract}
+                        </p>
                       </div>
-                      
-                      <h3 className="text-xl font-black text-white tracking-tighter leading-snug line-clamp-2 group-hover:text-[#00a3ff] transition-colors">
-                        {paper.title}
-                      </h3>
-                      {paper.keywords && paper.keywords.length > 0 && (
-                        <div className="flex flex-wrap gap-1.5 pt-1">
-                          {paper.keywords.map((kw, i) => (
-                            <span key={i} className="text-[8px] font-mono text-[#00a3ff]/70 bg-[#00a3ff]/05 border border-[#00a3ff]/10 px-2 py-0.5 rounded">
-                              #{kw}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                      <p className="text-gray-500 text-xs font-medium leading-relaxed line-clamp-3">
-                        {paper.abstract}
-                      </p>
-                    </div>
- 
-                    <div className="mt-8 pt-5 border-t border-white/[0.04] space-y-4">
-                      {/* Meta information tags */}
-                      <div className="flex justify-between items-center text-[9px] font-mono text-gray-600">
-                        <div className="flex items-center gap-1.5 truncate max-w-[120px]">
-                          <User className="w-3 h-3 text-gray-700" />
-                          <span className="truncate">{paper.author}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5 shrink-0">
-                          <Calendar className="w-3 h-3 text-gray-700" />
+
+                      {/* Card Footer */}
+                      <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between gap-2 relative z-0">
+                        <div className="flex items-center gap-1.5 text-[10px] font-mono font-semibold text-gray-400">
+                          <Calendar className="w-3 h-3 text-[#00a3ff]" />
                           <span>{paper.date}</span>
                         </div>
-                      </div>
- 
-                      <div 
-                        className="w-full flex items-center justify-center gap-2 py-3 bg-white/[0.02] border border-white/5 rounded-xl hover:bg-[#00a3ff]/10 hover:border-[#00a3ff]/30 hover:text-[#00a3ff] transition-all text-[10px] font-black uppercase tracking-wider cursor-pointer relative z-20 pointer-events-none"
-                      >
-                        <BookOpen className="w-3.5 h-3.5" />
-                        Read Dispatch
+
+                        <div className="flex items-center gap-1.5 text-xs font-bold font-mono text-gray-300 group-hover:text-[#00a3ff] transition-colors uppercase tracking-wider">
+                          <span>Read Paper</span>
+                          <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-             </motion.div>
-           )}
+                  );
+                })}
+              </motion.div>
+            )}
          </AnimatePresence>
 
          {/* PAGINATION CONTROLS */}
