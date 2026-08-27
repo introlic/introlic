@@ -140,7 +140,13 @@ export async function POST(req: Request) {
       // Create standard user session (JWT Cookie)
       await createSession(user.id);
 
-      return NextResponse.json({ message: "Login successful", role: "user" }, { status: 200, headers });
+      const redirect = user.role === "member" ? "/introlic" : user.role === "admin" ? "/admin" : null;
+
+      return NextResponse.json({ 
+        message: "Login successful", 
+        role: user.role,
+        redirect 
+      }, { status: 200, headers });
     } else if (admin) {
       // Check lockout status
       const now = new Date();

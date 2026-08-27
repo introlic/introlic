@@ -509,6 +509,7 @@ export default function UsersClient({ recentUsers: initialUsers }: UsersClientPr
             options={[
               { value: "All", label: "All Roles" },
               { value: "user", label: "User" },
+              { value: "member", label: "Member" },
               { value: "author", label: "Author" },
               { value: "admin", label: "Admin" }
             ]}
@@ -784,6 +785,7 @@ export default function UsersClient({ recentUsers: initialUsers }: UsersClientPr
                     value={formData.role}
                     options={[
                       { value: "user", label: "User" },
+                      { value: "member", label: "Member" },
                       { value: "author", label: "Author" },
                       { value: "admin", label: "Admin" }
                     ]}
@@ -978,6 +980,7 @@ export default function UsersClient({ recentUsers: initialUsers }: UsersClientPr
                         value={formData.role}
                         options={[
                           { value: "user", label: "User" },
+                          { value: "member", label: "Member" },
                           { value: "author", label: "Author" },
                           { value: "admin", label: "Admin" }
                         ]}

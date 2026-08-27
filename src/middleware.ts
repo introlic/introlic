@@ -24,6 +24,24 @@ async function verifyAdminToken(token: string): Promise<boolean> {
   }
 }
 
+async function verifyUserToken(token: string): Promise<boolean> {
+  try {
+    const { payload } = await jwtVerify(token, key, {
+      algorithms: ["HS256"],
+    });
+    
+    if (payload.expires) {
+      const expires = new Date(payload.expires as string);
+      if (expires.getTime() < Date.now()) {
+        return false;
+      }
+    }
+    return !!payload.userId;
+  } catch (e) {
+    return false;
+  }
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const { method } = request;
@@ -46,7 +64,21 @@ export async function middleware(request: NextRequest) {
     }
   }
 
-  // 2. Centralized administrative API write protection
+  // 2. Members Panel Protection (/introlic)
+  if (pathname.startsWith("/introlic")) {
+    const userSessionCookie = request.cookies.get("session")?.value;
+    const adminSessionCookie = request.cookies.get("admin_session")?.value;
+
+    const isUserValid = userSessionCookie ? await verifyUserToken(userSessionCookie) : false;
+    const isAdminValid = adminSessionCookie ? await verifyAdminToken(adminSessionCookie) : false;
+
+    if (!isUserValid && !isAdminValid) {
+      const homeUrl = new URL("/?login=true", request.url);
+      return NextResponse.redirect(homeUrl);
+    }
+  }
+
+  // 3. Centralized administrative API write protection
   if (pathname.startsWith("/api")) {
     // Read-only methods (GET, OPTIONS, HEAD) are allowed publicly
     const readMethods = ["GET", "OPTIONS", "HEAD"];
@@ -54,11 +86,12 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
-    // Exclude public endpoints that require write methods (like submitting contacts, logging in, tracking view counts)
+    // Exclude public endpoints that require write methods
     const publicWritePaths = [
       "/api/admin/login",
       "/api/auth/register",
       "/api/auth/login",
+      "/api/auth/logout",
       "/api/auth/validate",
       "/api/contact",
       "/api/analytics/hit"
@@ -87,6 +120,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/admin/:path*",
+    "/introlic/:path*",
     "/api/:path*",
   ],
 };
