@@ -215,9 +215,9 @@ function AuthorCard({ authorName, authorsList, label = "Author" }: {
 
         {/* Profile Details */}
         <div className="flex items-center gap-4 mb-5">
-          {displayObj.avatar || displayObj.imageUrl || displayObj.avatarUrl ? (
-            <div className="w-14 h-14 rounded-2xl overflow-hidden border border-[#00a3ff]/40 shadow-[0_0_25px_rgba(0,163,255,0.2)] shrink-0 bg-black">
-              <img src={displayObj.avatar || displayObj.imageUrl || displayObj.avatarUrl} alt={displayObj.name} className="w-full h-full object-cover" />
+          {displayObj.imageUrl || displayObj.avatarUrl ? (
+            <div className="w-14 h-14 rounded-2xl overflow-hidden border border-[#00a3ff]/40 shadow-[0_0_25px_rgba(0,163,255,0.2)] shrink-0">
+              <img src={displayObj.imageUrl || displayObj.avatarUrl} alt={displayObj.name} className="w-full h-full object-cover" />
             </div>
           ) : (
             <div className="relative w-14 h-14 rounded-2xl bg-gradient-to-br from-[#00a3ff]/20 via-[#0055ff]/15 to-[#00d1ff]/10 border border-[#00a3ff]/40 flex items-center justify-center shrink-0 select-none shadow-[0_0_25px_rgba(0,163,255,0.2)] group-hover:border-[#00a3ff]/60 transition-colors">

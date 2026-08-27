@@ -41,7 +41,7 @@ interface Project {
 // ─── Constants & Utilities ────────────────────────────────────────────────────
 
 const STATUS_STYLES: Record<Status, { bg: string; text: string; dot: string; border: string }> = {
-  Active:     { bg: "rgba(0,163,255,0.08)",   text: "#00a3ff", dot: "#00a3ff",  border: "rgba(0,163,255,0.25)"   },
+  Active:     { bg: '#f0f3f6',                text: '#0a0d12', dot: '#22c55e',  border: 'rgba(34,197,94,0.35)'   },
   Planning:   { bg: "rgba(168,85,247,0.08)",  text: "#a855f7", dot: "#a855f7",  border: "rgba(168,85,247,0.25)"  },
   Recruiting: { bg: "rgba(16,185,129,0.08)",  text: "#10b981", dot: "#10b981",  border: "rgba(16,185,129,0.25)"  },
   Paused:     { bg: "rgba(107,114,128,0.08)", text: "#6b7280", dot: "#6b7280",  border: "rgba(107,114,128,0.25)" },
@@ -117,8 +117,7 @@ function AuthorCard({ authorObj, ageAndDOB }: { authorObj: any; ageAndDOB: strin
   const initials = authorObj.name
     ? authorObj.name.split(" ").map((n: string) => n[0]).join("").toUpperCase().slice(0, 2)
     : "A";
-
-  const avatarUrl = authorObj.avatar || authorObj.avatarUrl || authorObj.imageUrl;
+  const avatarUrl = authorObj.avatar || authorObj.avatarUrl || authorObj.imageUrl || null;
 
   const socials = [
     { key: "twitter",   icon: XIcon,          label: "Twitter/X" },
@@ -131,43 +130,38 @@ function AuthorCard({ authorObj, ageAndDOB }: { authorObj: any; ageAndDOB: strin
   ].filter(s => authorObj.socialLinks?.[s.key]);
 
   return (
-    <div className="relative rounded-3xl border border-white/[0.08] bg-[#07070b]/90 backdrop-blur-2xl p-6 sm:p-7 space-y-6 shadow-[0_20px_50px_rgba(0,0,0,0.6)] overflow-hidden group hover:border-[#00a3ff]/30 transition-all duration-500">
-      {/* Top subtle glow accent line */}
-      <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-[#00a3ff]/40 to-transparent" />
-      
+    <div className="rounded-2xl border border-white/[0.06] bg-[#060609] p-6 space-y-5">
       {/* Header */}
-      <div className="flex items-center justify-between pb-4 border-b border-white/[0.06]">
-        <div className="flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-[#00a3ff] animate-pulse shadow-[0_0_8px_#00a3ff]" />
-          <p className="text-[10px] font-black tracking-[0.25em] uppercase text-[#00a3ff]">
-            Project Lead
-          </p>
-        </div>
-        <span className="text-[9px] font-mono text-gray-400 uppercase tracking-widest px-2.5 py-0.5 rounded-full bg-white/[0.03] border border-white/[0.06]">
-          Architect
-        </span>
+      <div className="flex items-center justify-between pb-4 border-b border-white/[0.05]">
+        <p className="text-[10px] font-black tracking-[0.3em] uppercase text-white">
+          Project Lead
+        </p>
+        <span className="text-[10px] font-mono text-gray-400 uppercase tracking-widest">Architect</span>
       </div>
 
       {/* Profile Info */}
       <div className="flex items-center gap-4">
         {avatarUrl ? (
-          <div className="w-14 h-14 rounded-2xl overflow-hidden border border-[#00a3ff]/30 shadow-[0_0_20px_rgba(0,163,255,0.2)] shrink-0 bg-black">
+          <div className="w-14 h-14 rounded-xl overflow-hidden border border-[#00a3ff]/40 shadow-[0_0_20px_rgba(0,163,255,0.15)] shrink-0">
             <img src={avatarUrl} alt={authorObj.name} className="w-full h-full object-cover" />
           </div>
         ) : (
-          <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#00a3ff]/20 via-[#0055ff]/15 to-[#00d1ff]/10 border border-[#00a3ff]/30 flex items-center justify-center text-[#00a3ff] font-black text-lg shrink-0 select-none shadow-[0_0_20px_rgba(0,163,255,0.15)] group-hover:border-[#00a3ff]/50 transition-colors">
-            {initials}
+          <div className="relative w-14 h-14 rounded-xl bg-gradient-to-br from-[#00a3ff]/20 via-[#0055ff]/15 to-[#00d1ff]/10 border border-[#00a3ff]/40 flex items-center justify-center shrink-0 select-none shadow-[0_0_20px_rgba(0,163,255,0.15)]">
+            <svg viewBox="0 0 40 40" fill="none" className="w-7 h-7" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="20" cy="14" r="7" fill="rgba(0,163,255,0.5)" />
+              <path d="M6 36c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="rgba(0,163,255,0.5)" strokeWidth="2.5" strokeLinecap="round" />
+            </svg>
+            <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#00a3ff] border-2 border-[#060609] flex items-center justify-center text-[8px] font-black text-black">
+              {initials}
+            </div>
           </div>
         )}
         <div className="min-w-0 flex-1">
-          <div className="text-lg font-black text-white tracking-tight truncate flex items-center gap-2">
-            {authorObj.name}
-            <BadgeCheck className="w-4 h-4 text-[#00a3ff] shrink-0" />
-          </div>
+          <div className="text-base font-black text-white tracking-tight truncate">{authorObj.name}</div>
           {ageAndDOB && (
             <div className="text-xs text-gray-500 font-mono mt-0.5">{ageAndDOB}</div>
           )}
-          <span className="inline-block mt-1.5 text-[10px] font-mono font-semibold uppercase tracking-wider text-[#00a3ff] bg-[#00a3ff]/10 px-2.5 py-0.5 rounded-md border border-[#00a3ff]/20">
+          <span className="inline-block mt-1 text-[11px] font-medium text-[#00a3ff] bg-[#00a3ff]/10 px-2 py-0.5 rounded border border-[#00a3ff]/20">
             Chief Architect
           </span>
         </div>
@@ -175,14 +169,14 @@ function AuthorCard({ authorObj, ageAndDOB }: { authorObj: any; ageAndDOB: strin
 
       {/* Bio */}
       {authorObj.bio && (
-        <p className="text-xs sm:text-sm text-gray-300/90 leading-relaxed font-normal bg-white/[0.02] border border-white/[0.04] rounded-2xl p-3.5">
+        <p className="text-xs sm:text-sm text-gray-400 leading-relaxed font-medium border-l-2 border-[#00a3ff]/30 pl-3 py-0.5">
           {authorObj.bio}
         </p>
       )}
 
       {/* Social Links */}
       {socials.length > 0 && (
-        <div className="flex flex-wrap gap-2 pt-4 border-t border-white/[0.06]">
+        <div className="flex flex-wrap gap-2 pt-4 border-t border-white/[0.05]">
           {socials.map(({ key, icon: Icon, label }) => (
             <a
               key={key}
@@ -190,7 +184,7 @@ function AuthorCard({ authorObj, ageAndDOB }: { authorObj: any; ageAndDOB: strin
               target="_blank"
               rel="noopener noreferrer"
               title={label}
-              className="w-9 h-9 rounded-xl bg-white/[0.03] border border-white/[0.08] hover:border-[#00a3ff]/50 hover:bg-[#00a3ff]/10 text-gray-400 hover:text-[#00a3ff] flex items-center justify-center transition-all duration-300 shadow-sm"
+              className="w-8 h-8 rounded-lg bg-white/[0.03] border border-white/[0.06] hover:border-[#00a3ff]/40 hover:bg-[#00a3ff]/10 text-gray-400 hover:text-[#00a3ff] flex items-center justify-center transition-all duration-200"
             >
               <Icon className="w-4 h-4" />
             </a>
@@ -208,37 +202,29 @@ function Sidebar({ project, authorObj, ageAndDOB }: { project: Project; authorOb
   const openToList = project.openTo ? project.openTo.split(/[,\n]+/).map(s => s.trim()).filter(Boolean) : [];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
 
       {/* 1. PROJECT LEAD FIRST */}
       {authorObj && <AuthorCard authorObj={authorObj} ageAndDOB={ageAndDOB} />}
 
       {/* 2. STATUS & TIMELINE */}
-      <div className="rounded-3xl border border-white/[0.08] bg-[#07070b]/90 backdrop-blur-2xl p-6 divide-y divide-white/[0.06] shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
+      <div className="rounded-2xl border border-white/[0.06] bg-[#060609] divide-y divide-white/[0.05]">
         {/* Status */}
-        <div className="pb-5">
-          <p className="text-[10px] font-black tracking-[0.25em] uppercase text-gray-500 mb-3 flex items-center gap-2">
-            <Activity className="w-3.5 h-3.5 text-[#00a3ff]" />
-            Status
-          </p>
-          <div className="flex items-center gap-3">
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl border text-xs font-black tracking-wider uppercase shadow-[0_0_15px_rgba(0,163,255,0.15)]"
-              style={{ background: s.bg, color: s.text, borderColor: s.border }}>
-              <span className="w-2 h-2 rounded-full animate-ping opacity-75" style={{ background: s.dot }} />
-              <span className="w-1.5 h-1.5 rounded-full -ml-3.5" style={{ background: s.dot }} />
-              {project.status}
-            </span>
-          </div>
+        <div className="p-5">
+          <p className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-500 mb-3">Status</p>
+          <span className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl border text-xs font-black tracking-wide"
+            style={{ background: s.bg, color: s.text, borderColor: s.border }}>
+            <span className="w-1.5 h-1.5 rounded-full" style={{ background: s.dot }} />
+            {project.status}
+          </span>
         </div>
 
         {/* Timeline Started */}
         {project.started && (
-          <div className="pt-5">
-            <p className="text-[10px] font-black tracking-[0.25em] uppercase text-gray-500 mb-2.5 flex items-center gap-2">
-              <Calendar className="w-3.5 h-3.5 text-[#00a3ff]" />
-              Timeline Started
-            </p>
-            <div className="flex items-center gap-2 text-sm text-white font-bold font-mono bg-white/[0.02] border border-white/[0.05] px-3.5 py-2.5 rounded-xl">
+          <div className="p-5">
+            <p className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-500 mb-2">Timeline Started</p>
+            <div className="flex items-center gap-2 text-sm text-white font-semibold font-mono">
+              <Calendar className="w-4 h-4 text-[#00a3ff]/70 shrink-0" />
               {formatDate(project.started)}
             </div>
           </div>
@@ -247,15 +233,12 @@ function Sidebar({ project, authorObj, ageAndDOB }: { project: Project; authorOb
 
       {/* 3. TECH STACK */}
       {project.tags && project.tags.length > 0 && (
-        <div className="rounded-3xl border border-white/[0.08] bg-[#07070b]/90 backdrop-blur-2xl p-6 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
-          <p className="text-[10px] font-black tracking-[0.25em] uppercase text-gray-500 mb-4 flex items-center gap-2">
-            <Code2 className="w-3.5 h-3.5 text-[#00a3ff]" />
-            Tech Stack
-          </p>
-          <div className="flex flex-wrap gap-2.5">
+        <div className="rounded-2xl border border-white/[0.06] bg-[#060609] p-5">
+          <p className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-500 mb-3">Tech Stack</p>
+          <div className="flex flex-wrap gap-2">
             {project.tags.map(tag => (
               <span key={tag}
-                className="px-3.5 py-1.5 rounded-xl bg-white/[0.03] border border-white/[0.08] text-xs font-bold font-mono tracking-wide text-gray-200 hover:border-[#00a3ff]/40 hover:text-[#00a3ff] hover:bg-[#00a3ff]/5 transition-all duration-300 shadow-sm">
+                className="px-3 py-1 rounded-lg bg-white/[0.03] border border-white/[0.07] text-xs font-bold uppercase tracking-wider text-gray-300 hover:border-[#00a3ff]/30 hover:text-[#00a3ff] transition-colors">
                 {tag}
               </span>
             ))}
@@ -265,15 +248,12 @@ function Sidebar({ project, authorObj, ageAndDOB }: { project: Project; authorOb
 
       {/* 4. OPEN COLLABORATION */}
       {openToList.length > 0 && (
-        <div className="rounded-3xl border border-white/[0.08] bg-[#07070b]/90 backdrop-blur-2xl p-6 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
-          <p className="text-[10px] font-black tracking-[0.25em] uppercase text-gray-500 mb-4 flex items-center gap-2">
-            <Users className="w-3.5 h-3.5 text-emerald-400" />
-            Open Collaboration
-          </p>
-          <div className="flex flex-col gap-2.5">
+        <div className="rounded-2xl border border-white/[0.06] bg-[#060609] p-5">
+          <p className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-500 mb-3">Open Collaboration</p>
+          <div className="flex flex-col gap-2">
             {openToList.map(role => (
-              <div key={role} className="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-white/[0.02] border border-white/[0.05] text-xs font-medium text-gray-300">
-                <div className="w-2 h-2 rounded-full bg-emerald-400 shrink-0 shadow-[0_0_8px_#34d399]" />
+              <div key={role} className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-white/[0.02] border border-white/[0.04] text-xs font-medium text-gray-300">
+                <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 shrink-0" />
                 <span>{role}</span>
               </div>
             ))}
@@ -283,30 +263,27 @@ function Sidebar({ project, authorObj, ageAndDOB }: { project: Project; authorOb
 
       {/* 5. RESOURCES */}
       {(project.githubUrl || project.demoUrl) && (
-        <div className="rounded-3xl border border-white/[0.08] bg-[#07070b]/90 backdrop-blur-2xl p-6 space-y-3.5 shadow-[0_20px_50px_rgba(0,0,0,0.6)]">
-          <p className="text-[10px] font-black tracking-[0.25em] uppercase text-gray-500 mb-2 flex items-center gap-2">
-            <Globe className="w-3.5 h-3.5 text-[#00a3ff]" />
-            Resources
-          </p>
-          <div className="space-y-2.5">
+        <div className="rounded-2xl border border-white/[0.06] bg-[#060609] p-5 space-y-3">
+          <p className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-500 mb-3">Resources</p>
+          <div className="space-y-2">
             {project.githubUrl && (
               <a href={project.githubUrl} target="_blank" rel="noopener noreferrer"
-                className="group flex items-center justify-between w-full px-4 py-3.5 rounded-2xl bg-white/[0.02] border border-white/[0.06] hover:border-[#00a3ff]/40 hover:bg-[#00a3ff]/10 transition-all duration-300 shadow-sm">
-                <span className="flex items-center gap-3 text-xs sm:text-sm font-bold text-gray-300 group-hover:text-white">
+                className="group flex items-center justify-between w-full px-4 py-3 rounded-xl bg-white/[0.02] border border-white/[0.05] hover:border-[#00a3ff]/30 hover:bg-[#00a3ff]/5 transition-all duration-200">
+                <span className="flex items-center gap-3 text-xs sm:text-sm font-semibold text-gray-400 group-hover:text-white">
                   <GithubIcon className="w-4 h-4 text-[#00a3ff]" />
                   Source Repository
                 </span>
-                <ExternalLink className="w-4 h-4 text-gray-500 group-hover:text-[#00a3ff] transition-colors" />
+                <ExternalLink className="w-4 h-4 text-gray-600 group-hover:text-[#00a3ff] transition-colors" />
               </a>
             )}
             {project.demoUrl && (
               <a href={project.demoUrl} target="_blank" rel="noopener noreferrer"
-                className="group flex items-center justify-between w-full px-4 py-3.5 rounded-2xl bg-emerald-500/[0.06] border border-emerald-500/20 hover:border-emerald-400 hover:bg-emerald-500/15 transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.1)]">
-                <span className="flex items-center gap-3 text-xs sm:text-sm font-bold text-emerald-400 group-hover:text-emerald-300">
+                className="group flex items-center justify-between w-full px-4 py-3 rounded-xl bg-white/[0.02] border border-white/[0.05] hover:border-emerald-500/30 hover:bg-emerald-500/5 transition-all duration-200">
+                <span className="flex items-center gap-3 text-xs sm:text-sm font-semibold text-gray-400 group-hover:text-white">
                   <Globe className="w-4 h-4 text-emerald-400" />
                   Live Demo
                 </span>
-                <ExternalLink className="w-4 h-4 text-emerald-500 group-hover:text-emerald-300 transition-colors" />
+                <ExternalLink className="w-4 h-4 text-gray-600 group-hover:text-emerald-400 transition-colors" />
               </a>
             )}
           </div>
@@ -416,14 +393,11 @@ export default function ProjectDetailClient({ id, initialProject = null, initial
   const pageUrl = typeof window !== "undefined" ? window.location.href : `https://introlic.site/projects/${project.id}`;
 
   return (
-    <main className="min-h-screen bg-[#030305] text-white font-sans relative selection:bg-[#00a3ff]/30 overflow-hidden">
+    <main className="min-h-screen bg-[#020202] text-white font-sans relative">
 
-      {/* ── High-end background ambient glow mesh ── */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 left-1/4 w-[750px] h-[750px] bg-gradient-to-br from-[#00a3ff]/[0.08] to-transparent blur-[200px] rounded-full -translate-y-1/2" />
-        <div className="absolute bottom-1/4 right-0 w-[600px] h-[600px] bg-gradient-to-bl from-blue-900/[0.08] to-transparent blur-[180px] rounded-full" />
-        <div className="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:28px_28px] opacity-35" />
-      </div>
+      {/* ── Ambient glows ── */}
+      <div className="absolute top-0 left-0 w-[700px] h-[700px] bg-[#00a3ff]/[0.04] blur-[220px] rounded-full pointer-events-none -translate-x-1/3 -translate-y-1/3" />
+      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#0055aa]/[0.05] blur-[180px] rounded-full pointer-events-none translate-x-1/4 translate-y-1/4" />
 
       {/* ═══════════════════════════════════════════════════════
           HERO SECTION
@@ -588,7 +562,7 @@ export default function ProjectDetailClient({ id, initialProject = null, initial
           {/* ── RIGHT SIDEBAR ─────────────────────────────── */}
           <motion.div
             initial={{ opacity: 0, x: 16 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.3 }}
-            className="lg:col-span-4 lg:sticky lg:top-28 max-h-[calc(100vh-8rem)] overflow-y-auto custom-scrollbar pr-1"
+            className="lg:col-span-4 lg:sticky lg:top-28"
           >
             <Sidebar project={project} authorObj={authorObj} ageAndDOB={ageAndDOB} />
           </motion.div>

@@ -526,16 +526,26 @@ export default function ArticleLayout({ slug }: ArticleLayoutProps) {
                   
                   <div className="relative z-10 flex flex-col gap-4">
                     <div className="flex items-center gap-3">
-                      {/* Avatar Image / Initials */}
-                      {postAuthorObj.avatar || postAuthorObj.avatarUrl ? (
-                        <div className="w-12 h-12 rounded-xl overflow-hidden border border-[#00a3ff]/30 shrink-0 bg-black shadow-[0_4px_12px_rgba(0,163,255,0.15)]">
-                          <img src={postAuthorObj.avatar || postAuthorObj.avatarUrl} alt={postAuthorObj.name} className="w-full h-full object-cover" />
-                        </div>
-                      ) : (
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00a3ff]/20 to-[#00d1ff]/10 border border-[#00a3ff]/30 flex items-center justify-center text-white font-black text-sm select-none shadow-[0_4px_12px_rgba(0,163,255,0.15)]">
-                          {postAuthorObj.name ? postAuthorObj.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) : 'A'}
-                        </div>
-                      )}
+                      {/* Avatar */}
+                      {(() => {
+                        const avatarUrl = postAuthorObj.avatar || postAuthorObj.avatarUrl || postAuthorObj.imageUrl || null;
+                        const initials = postAuthorObj.name ? postAuthorObj.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) : 'A';
+                        return avatarUrl ? (
+                          <div className="w-12 h-12 rounded-xl overflow-hidden border border-[#00a3ff]/40 shadow-[0_0_15px_rgba(0,163,255,0.15)] shrink-0">
+                            <img src={avatarUrl} alt={postAuthorObj.name} className="w-full h-full object-cover" />
+                          </div>
+                        ) : (
+                          <div className="relative w-12 h-12 rounded-xl bg-gradient-to-br from-[#00a3ff]/20 to-[#00d1ff]/10 border border-[#00a3ff]/30 flex items-center justify-center select-none shadow-[0_4px_12px_rgba(0,163,255,0.15)]">
+                            <svg viewBox="0 0 40 40" fill="none" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
+                              <circle cx="20" cy="14" r="7" fill="rgba(0,163,255,0.5)" />
+                              <path d="M6 36c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="rgba(0,163,255,0.5)" strokeWidth="2.5" strokeLinecap="round" />
+                            </svg>
+                            <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#00a3ff] border-2 border-[#060609] flex items-center justify-center text-[7px] font-black text-black">
+                              {initials}
+                            </div>
+                          </div>
+                        );
+                      })()}
                       <div className="flex flex-col">
                         <h4 className="text-sm font-black text-white tracking-tight">{postAuthorObj.name}</h4>
                         {authorAgeAndDOB && (
@@ -642,16 +652,26 @@ export default function ArticleLayout({ slug }: ArticleLayoutProps) {
                     <p className="text-[9px] font-mono text-gray-600 tracking-[0.3em] uppercase">About the Author</p>
                     
                     <div className="flex items-center gap-3">
-                      {/* Avatar Image / Initials */}
-                      {postAuthorObj.avatar || postAuthorObj.avatarUrl ? (
-                        <div className="w-12 h-12 rounded-xl overflow-hidden border border-[#00a3ff]/30 shrink-0 bg-black shadow-[0_4px_12px_rgba(0,163,255,0.15)]">
-                          <img src={postAuthorObj.avatar || postAuthorObj.avatarUrl} alt={postAuthorObj.name} className="w-full h-full object-cover" />
-                        </div>
-                      ) : (
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#00a3ff]/20 to-[#00d1ff]/10 border border-[#00a3ff]/30 flex items-center justify-center text-white font-black text-sm select-none shadow-[0_4px_12px_rgba(0,163,255,0.15)]">
-                          {postAuthorObj.name ? postAuthorObj.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) : 'A'}
-                        </div>
-                      )}
+                      {/* Avatar */}
+                      {(() => {
+                        const avatarUrl = postAuthorObj.avatar || postAuthorObj.avatarUrl || postAuthorObj.imageUrl || null;
+                        const initials = postAuthorObj.name ? postAuthorObj.name.split(' ').map((n: string) => n[0]).join('').toUpperCase().slice(0, 2) : 'A';
+                        return avatarUrl ? (
+                          <div className="w-12 h-12 rounded-xl overflow-hidden border border-[#00a3ff]/40 shadow-[0_0_15px_rgba(0,163,255,0.15)] shrink-0">
+                            <img src={avatarUrl} alt={postAuthorObj.name} className="w-full h-full object-cover" />
+                          </div>
+                        ) : (
+                          <div className="relative w-12 h-12 rounded-xl bg-gradient-to-br from-[#00a3ff]/20 to-[#00d1ff]/10 border border-[#00a3ff]/30 flex items-center justify-center select-none shadow-[0_4px_12px_rgba(0,163,255,0.15)]">
+                            <svg viewBox="0 0 40 40" fill="none" className="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
+                              <circle cx="20" cy="14" r="7" fill="rgba(0,163,255,0.5)" />
+                              <path d="M6 36c0-7.732 6.268-14 14-14s14 6.268 14 14" stroke="rgba(0,163,255,0.5)" strokeWidth="2.5" strokeLinecap="round" />
+                            </svg>
+                            <div className="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-[#00a3ff] border-2 border-[#060609] flex items-center justify-center text-[7px] font-black text-black">
+                              {initials}
+                            </div>
+                          </div>
+                        );
+                      })()}
                       
                       <div className="flex flex-col">
                         <h4 className="text-sm font-black text-white tracking-tight">{postAuthorObj.name}</h4>

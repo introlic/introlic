@@ -464,15 +464,9 @@ export default function AuthorsClient({ initialAuthors }: AuthorsClientProps) {
                   <tr key={author.id} className="hover:bg-white/[0.01] transition-colors duration-200">
                     <td className="p-4 pl-6">
                       <div className="flex items-center gap-3">
-                        {author.avatar ? (
-                          <div className="w-8 h-8 rounded-lg overflow-hidden border border-[#00a3ff]/30 shrink-0 bg-black shadow-sm">
-                            <img src={author.avatar} alt={author.name} className="w-full h-full object-cover" />
-                          </div>
-                        ) : (
-                          <div className="w-8 h-8 rounded-lg bg-[#00a3ff]/10 border border-[#00a3ff]/20 text-[#00a3ff] flex items-center justify-center font-bold text-xs uppercase font-mono">
-                            {author.name.substring(0, 2)}
-                          </div>
-                        )}
+                        <div className="w-8 h-8 rounded-lg bg-[#00a3ff]/10 border border-[#00a3ff]/20 text-[#00a3ff] flex items-center justify-center font-bold text-xs uppercase font-mono">
+                          {author.name.substring(0, 2)}
+                        </div>
                         <span className="font-bold text-white text-sm">{author.name}</span>
                       </div>
                     </td>
@@ -596,31 +590,6 @@ export default function AuthorsClient({ initialAuthors }: AuthorsClientProps) {
                     rows={3}
                     className="w-full bg-[#0a0a0a] border border-white/[0.08] focus:border-[#00a3ff]/40 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none font-sans resize-none"
                   />
-                </div>
-
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest font-mono flex items-center justify-between">
-                    <span>Profile Picture / Avatar URL <span className="text-gray-600 font-normal lowercase italic">(optional)</span></span>
-                    {formData.avatar && <span className="text-emerald-400 text-[8px] font-normal font-mono">Image Previewed</span>}
-                  </label>
-                  <div className="flex items-center gap-3">
-                    {formData.avatar ? (
-                      <div className="w-10 h-10 rounded-xl overflow-hidden border border-[#00a3ff]/40 shrink-0 bg-black">
-                        <img src={formData.avatar} alt="Preview" className="w-full h-full object-cover" />
-                      </div>
-                    ) : (
-                      <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-500 shrink-0">
-                        <User className="w-4 h-4" />
-                      </div>
-                    )}
-                    <input
-                      type="url"
-                      value={formData.avatar}
-                      onChange={e => setFormData({ ...formData, avatar: e.target.value })}
-                      placeholder="https://example.com/avatar.jpg or /uploads/..."
-                      className="w-full bg-[#0a0a0a] border border-white/[0.08] focus:border-[#00a3ff]/40 rounded-xl px-3.5 py-2 text-xs text-white outline-none font-sans"
-                    />
-                  </div>
                 </div>
 
                 <div className="border-t border-white/5 pt-4">
@@ -787,31 +756,6 @@ export default function AuthorsClient({ initialAuthors }: AuthorsClientProps) {
                     rows={3}
                     className="w-full bg-[#0a0a0a] border border-white/[0.08] focus:border-[#00a3ff]/40 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none font-sans resize-none"
                   />
-                </div>
-
-                <div className="flex flex-col gap-1.5">
-                  <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest font-mono flex items-center justify-between">
-                    <span>Profile Picture / Avatar URL <span className="text-gray-600 font-normal lowercase italic">(optional)</span></span>
-                    {formData.avatar && <span className="text-emerald-400 text-[8px] font-normal font-mono">Image Previewed</span>}
-                  </label>
-                  <div className="flex items-center gap-3">
-                    {formData.avatar ? (
-                      <div className="w-10 h-10 rounded-xl overflow-hidden border border-[#00a3ff]/40 shrink-0 bg-black">
-                        <img src={formData.avatar} alt="Preview" className="w-full h-full object-cover" />
-                      </div>
-                    ) : (
-                      <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-gray-500 shrink-0">
-                        <User className="w-4 h-4" />
-                      </div>
-                    )}
-                    <input
-                      type="url"
-                      value={formData.avatar}
-                      onChange={e => setFormData({ ...formData, avatar: e.target.value })}
-                      placeholder="https://example.com/avatar.jpg or /uploads/..."
-                      className="w-full bg-[#0a0a0a] border border-white/[0.08] focus:border-[#00a3ff]/40 rounded-xl px-3.5 py-2 text-xs text-white outline-none font-sans"
-                    />
-                  </div>
                 </div>
 
                 <div className="border-t border-white/5 pt-4">

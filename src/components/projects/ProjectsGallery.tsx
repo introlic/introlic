@@ -38,7 +38,7 @@ interface Project {
 }
 
 const STATUS_COLORS: Record<Status, { bg: string; text: string; dot: string }> = {
-  Active:     { bg: 'rgba(0,163,255,0.08)',  text: '#00a3ff', dot: '#00a3ff' },
+  Active:     { bg: '#f0f3f6',               text: '#0a0d12', dot: '#22c55e' },
   Planning:   { bg: 'rgba(168,85,247,0.08)', text: '#a855f7', dot: '#a855f7' },
   Recruiting: { bg: 'rgba(16,185,129,0.08)', text: '#10b981', dot: '#10b981' },
   Paused:     { bg: 'rgba(107,114,128,0.08)',text: '#6b7280', dot: '#6b7280' },
