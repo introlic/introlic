@@ -64,6 +64,13 @@ const nextConfig: NextConfig = {
     imageSizes: [16, 32, 64, 128, 256, 384, 512],
     minimumCacheTTL: 86400, // 24 hours
     remotePatterns: [],
+    // Allow locally-served uploads (thumbnails saved to public/uploads/...)
+    localPatterns: [
+      {
+        pathname: '/uploads/**',
+        search: '',
+      },
+    ],
   },
   // Simple indicator setting for Next.js 15+ compatibility
   devIndicators: false,
