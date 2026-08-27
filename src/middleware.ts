@@ -86,13 +86,14 @@ export async function middleware(request: NextRequest) {
       return NextResponse.next();
     }
 
-    // Exclude public endpoints that require write methods
+    // Exclude public and member-authenticated endpoints that require write methods
     const publicWritePaths = [
       "/api/admin/login",
       "/api/auth/register",
       "/api/auth/login",
       "/api/auth/logout",
       "/api/auth/validate",
+      "/api/member/profile",
       "/api/contact",
       "/api/analytics/hit"
     ];

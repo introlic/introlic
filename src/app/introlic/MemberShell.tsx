@@ -62,6 +62,7 @@ export default function MemberShell({ member, children }: MemberShellProps) {
     { label: "Projects Engine", href: "/introlic#projects", icon: FolderKanban },
     { label: "Sovereign Docs", href: "/introlic#resources", icon: FileCode2 },
     { label: "Team & Builders", href: "/introlic#team", icon: Users2 },
+    { label: "My Profile", href: "/introlic#profile", icon: User },
   ];
 
   const initials = member.name

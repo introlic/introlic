@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import { 
   Users, ChevronRight, Plus, Search, Edit, Trash2, X, 
   ChevronDown, Calendar, Loader2, UserCheck, UserX, Shield,
-  Filter, AlertTriangle, RefreshCw, Mail, User, Info, Link2
+  Filter, AlertTriangle, RefreshCw, Mail, User, Info, Link2, Sparkles
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -729,78 +729,105 @@ export default function UsersClient({ recentUsers: initialUsers }: UsersClientPr
               </div>
 
               <form onSubmit={handleAddSubmit} className="space-y-4">
+                {formData.role === "member" && (
+                  <div className="p-3.5 rounded-xl bg-[#00a3ff]/10 border border-[#00a3ff]/25 text-[11px] text-[#00a3ff] flex items-start gap-2.5">
+                    <Sparkles className="w-4 h-4 shrink-0 mt-0.5" />
+                    <span>
+                      <strong>Member Quick-Create:</strong> Only <strong>Full Name</strong>, <strong>Username</strong>, and <strong>Password</strong> are required. The member can add their email, bio, and social links when they log into the portal.
+                    </span>
+                  </div>
+                )}
+
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest font-mono">Full Name</label>
+                    <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest font-mono">
+                      Assign Role
+                    </label>
+                    <CustomSelect
+                      label="Assign Role"
+                      value={formData.role}
+                      options={[
+                        { value: "member", label: "Member (Quick-Add)" },
+                        { value: "user", label: "User" },
+                        { value: "author", label: "Author" },
+                        { value: "admin", label: "Admin" }
+                      ]}
+                      onChange={val => setFormData({ ...formData, role: val })}
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest font-mono">
+                      Status Mode
+                    </label>
+                    <CustomSelect
+                      label="Status Mode"
+                      value={formData.status}
+                      options={[
+                        { value: "active", label: "Active" },
+                        { value: "suspended", label: "Suspended" }
+                      ]}
+                      onChange={val => setFormData({ ...formData, status: val })}
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest font-mono">
+                      Full Name <span className="text-red-400">*</span>
+                    </label>
                     <input
                       type="text"
                       required
                       value={formData.name}
                       onChange={e => setFormData({ ...formData, name: e.target.value })}
                       placeholder="e.g. John Doe"
-                      className="w-full bg-[#0a0a0a] border border-white/[0.08] focus:border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none font-sans"
+                      className="w-full bg-[#0a0a0a] border border-white/[0.08] focus:border-[#00a3ff]/40 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none font-sans"
                     />
                   </div>
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest font-mono">Username</label>
+                    <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest font-mono">
+                      Username <span className="text-red-400">*</span>
+                    </label>
                     <input
                       type="text"
                       required
                       value={formData.username}
                       onChange={e => setFormData({ ...formData, username: e.target.value })}
                       placeholder="e.g. johndoe"
-                      className="w-full bg-[#0a0a0a] border border-white/[0.08] focus:border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none font-mono"
+                      className="w-full bg-[#0a0a0a] border border-white/[0.08] focus:border-[#00a3ff]/40 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none font-mono"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest font-mono">Email Address</label>
-                    <input
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={e => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="e.g. john@example.com"
-                      className="w-full bg-[#0a0a0a] border border-white/[0.08] focus:border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none font-mono"
-                    />
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest font-mono">Set Password</label>
+                    <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest font-mono">
+                      Set Password <span className="text-red-400">*</span>
+                    </label>
                     <input
                       type="password"
                       required
                       value={formData.password}
                       onChange={e => setFormData({ ...formData, password: e.target.value })}
                       placeholder="At least 8 chars..."
-                      className="w-full bg-[#0a0a0a] border border-white/[0.08] focus:border-white/20 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none font-mono"
+                      className="w-full bg-[#0a0a0a] border border-white/[0.08] focus:border-[#00a3ff]/40 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none font-mono"
                     />
                   </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <CustomSelect
-                    label="Assign Role"
-                    value={formData.role}
-                    options={[
-                      { value: "user", label: "User" },
-                      { value: "member", label: "Member" },
-                      { value: "author", label: "Author" },
-                      { value: "admin", label: "Admin" }
-                    ]}
-                    onChange={val => setFormData({ ...formData, role: val })}
-                  />
-
-                  <CustomSelect
-                    label="Status Mode"
-                    value={formData.status}
-                    options={[
-                      { value: "active", label: "Active" },
-                      { value: "suspended", label: "Suspended" }
-                    ]}
-                    onChange={val => setFormData({ ...formData, status: val })}
-                  />
+                  <div className="flex flex-col gap-1.5">
+                    <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest font-mono">
+                      Email Address {formData.role === "member" ? <span className="text-gray-500 font-normal lowercase italic">(optional for members)</span> : <span className="text-red-400">*</span>}
+                    </label>
+                    <input
+                      type="email"
+                      required={formData.role !== "member"}
+                      value={formData.email}
+                      onChange={e => setFormData({ ...formData, email: e.target.value })}
+                      placeholder={formData.role === "member" ? "Auto-assigned if left blank" : "e.g. john@example.com"}
+                      className="w-full bg-[#0a0a0a] border border-white/[0.08] focus:border-[#00a3ff]/40 rounded-xl px-3.5 py-2.5 text-xs text-white outline-none font-mono"
+                    />
+                  </div>
                 </div>
 
                 <div className="h-px bg-white/5 my-2" />
@@ -820,7 +847,7 @@ export default function UsersClient({ recentUsers: initialUsers }: UsersClientPr
                   />
 
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest font-mono">Date of Birth</label>
+                    <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest font-mono">Date of Birth <span className="text-gray-600 font-normal lowercase italic">(optional)</span></label>
                     <input
                       type="date"
                       value={formData.dateOfBirth}
@@ -831,7 +858,7 @@ export default function UsersClient({ recentUsers: initialUsers }: UsersClientPr
                 </div>
 
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest font-mono">Social Profile Link</label>
+                  <label className="text-[9px] font-bold text-gray-500 uppercase tracking-widest font-mono">Social Profile Link <span className="text-gray-600 font-normal lowercase italic">(optional)</span></label>
                   <input
                     type="url"
                     value={formData.socialHandle}

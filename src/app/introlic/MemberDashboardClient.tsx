@@ -24,7 +24,16 @@ import {
   Clock,
   Tag,
   Zap,
-  Code2
+  Code2,
+  User,
+  Mail,
+  Lock,
+  KeyRound,
+  Shield,
+  Save,
+  Loader2,
+  AlertCircle,
+  Check
 } from "lucide-react";
 import { GithubIcon } from "@/components/SocialIcons";
 
@@ -64,6 +73,102 @@ export default function MemberDashboardClient({
   initialPapers = [],
 }: MemberDashboardClientProps) {
   const [activeTab, setActiveTab] = useState<"overview" | "announcements" | "projects" | "resources">("overview");
+
+  // Member Profile & Credentials State
+  const [profileLoading, setProfileLoading] = useState(false);
+  const [profileSaving, setProfileSaving] = useState(false);
+  const [profileSuccess, setProfileSuccess] = useState("");
+  const [profileError, setProfileError] = useState("");
+  const [profile, setProfile] = useState({
+    name: "",
+    username: "",
+    email: "",
+    gender: "",
+    dateOfBirth: "",
+    socialHandle: "",
+    role: "member",
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+
+  const fetchProfile = async () => {
+    setProfileLoading(true);
+    try {
+      const res = await fetch("/api/member/profile");
+      if (res.ok) {
+        const data = await res.json();
+        setProfile((prev) => ({
+          ...prev,
+          name: data.name || "",
+          username: data.username || "",
+          email: data.email || "",
+          gender: data.gender || "",
+          dateOfBirth: data.dateOfBirth ? data.dateOfBirth.split("T")[0] : "",
+          socialHandle: data.socialHandle || "",
+          role: data.role || "member",
+        }));
+      }
+    } catch (e) {
+      console.error("Failed to load member profile:", e);
+    } finally {
+      setProfileLoading(false);
+    }
+  };
+
+  React.useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  const handleProfileSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setProfileError("");
+    setProfileSuccess("");
+
+    if (profile.newPassword && profile.newPassword !== profile.confirmPassword) {
+      setProfileError("New password and confirm password do not match");
+      return;
+    }
+
+    if (profile.newPassword && !profile.currentPassword) {
+      setProfileError("Current password is required to change password");
+      return;
+    }
+
+    setProfileSaving(true);
+    try {
+      const res = await fetch("/api/member/profile", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: profile.name,
+          email: profile.email,
+          gender: profile.gender || null,
+          dateOfBirth: profile.dateOfBirth || null,
+          socialHandle: profile.socialHandle || null,
+          currentPassword: profile.currentPassword || undefined,
+          newPassword: profile.newPassword || undefined,
+        }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        setProfileSuccess("Member profile updated successfully!");
+        setProfile((prev) => ({
+          ...prev,
+          currentPassword: "",
+          newPassword: "",
+          confirmPassword: "",
+        }));
+      } else {
+        setProfileError(data.error || "Failed to update profile");
+      }
+    } catch (err) {
+      setProfileError("Communication error with server");
+    } finally {
+      setProfileSaving(false);
+    }
+  };
 
   // Curated internal announcements & engineering dispatches
   const announcements = [
@@ -507,6 +612,212 @@ export default function MemberDashboardClient({
             </a>
           </div>
         </div>
+      </section>
+
+      {/* ── 7. MY PROFILE & CREDENTIALS SETTINGS ── */}
+      <section id="profile" className="space-y-6 pt-4 scroll-mt-24">
+        <div className="flex items-center justify-between border-b border-white/[0.08] pb-4">
+          <div className="flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-[#00a3ff]/10 border border-[#00a3ff]/20">
+              <User className="w-5 h-5 text-[#00a3ff]" />
+            </div>
+            <div>
+              <h2 className="text-xl sm:text-2xl font-black text-white tracking-tight">My Member Profile & Credentials</h2>
+              <p className="text-xs font-mono text-gray-500 uppercase tracking-widest">Update your contact info, socials, and sovereign security</p>
+            </div>
+          </div>
+          <span className="text-[10px] font-mono font-bold uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+            Node: @{profile.username || "member"}
+          </span>
+        </div>
+
+        <form onSubmit={handleProfileSubmit} className="p-6 sm:p-10 rounded-3xl border border-white/[0.08] bg-[#05070c] space-y-8 shadow-2xl">
+          {/* Status Feedback Banners */}
+          {profileSuccess && (
+            <div className="p-4 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 text-xs font-medium text-emerald-300 flex items-center gap-3">
+              <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span>{profileSuccess}</span>
+            </div>
+          )}
+
+          {profileError && (
+            <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-xs font-medium text-red-300 flex items-center gap-3">
+              <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+              <span>{profileError}</span>
+            </div>
+          )}
+
+          {/* Core Profile Fields */}
+          <div className="space-y-4">
+            <h3 className="text-xs font-mono font-bold text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
+              <Shield className="w-3.5 h-3.5 text-[#00a3ff]" />
+              Basic Identity & Contact
+            </h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-mono uppercase tracking-widest text-gray-400">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={profile.name}
+                  onChange={(e) => setProfile({ ...profile, name: e.target.value })}
+                  placeholder="Your full name"
+                  className="w-full bg-[#0a0a0e] border border-white/[0.08] focus:border-[#00a3ff]/40 rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-600 outline-none font-sans"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-mono uppercase tracking-widest text-gray-400">
+                  Username <span className="text-gray-600">(Immutable ID)</span>
+                </label>
+                <input
+                  type="text"
+                  disabled
+                  value={profile.username}
+                  className="w-full bg-[#07070a] border border-white/[0.05] rounded-xl px-4 py-2.5 text-xs text-gray-400 outline-none font-mono cursor-not-allowed"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-mono uppercase tracking-widest text-gray-400">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  value={profile.email}
+                  onChange={(e) => setProfile({ ...profile, email: e.target.value })}
+                  placeholder="your.email@example.com"
+                  className="w-full bg-[#0a0a0e] border border-white/[0.08] focus:border-[#00a3ff]/40 rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-600 outline-none font-mono"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-mono uppercase tracking-widest text-gray-400">
+                  Social / GitHub Profile Link
+                </label>
+                <input
+                  type="url"
+                  value={profile.socialHandle}
+                  onChange={(e) => setProfile({ ...profile, socialHandle: e.target.value })}
+                  placeholder="https://github.com/yourhandle"
+                  className="w-full bg-[#0a0a0e] border border-white/[0.08] focus:border-[#00a3ff]/40 rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-600 outline-none font-mono"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-mono uppercase tracking-widest text-gray-400">
+                  Gender
+                </label>
+                <select
+                  value={profile.gender}
+                  onChange={(e) => setProfile({ ...profile, gender: e.target.value })}
+                  className="w-full bg-[#0a0a0e] border border-white/[0.08] focus:border-[#00a3ff]/40 rounded-xl px-4 py-2.5 text-xs text-white outline-none font-sans"
+                >
+                  <option value="">Not Specified</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                  <option value="prefer-not">Prefer Not to Say</option>
+                </select>
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-mono uppercase tracking-widest text-gray-400">
+                  Date of Birth
+                </label>
+                <input
+                  type="date"
+                  value={profile.dateOfBirth}
+                  onChange={(e) => setProfile({ ...profile, dateOfBirth: e.target.value })}
+                  className="w-full bg-[#0a0a0e] border border-white/[0.08] focus:border-[#00a3ff]/40 rounded-xl px-4 py-2.5 text-xs text-white outline-none font-sans"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="h-px bg-white/[0.06]" />
+
+          {/* Password Security Update */}
+          <div className="space-y-4">
+            <h3 className="text-xs font-mono font-bold text-gray-400 uppercase tracking-[0.2em] flex items-center gap-2">
+              <KeyRound className="w-3.5 h-3.5 text-[#00a3ff]" />
+              Security & Password (Optional)
+            </h3>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-mono uppercase tracking-widest text-gray-400">
+                  Current Password
+                </label>
+                <input
+                  type="password"
+                  value={profile.currentPassword}
+                  onChange={(e) => setProfile({ ...profile, currentPassword: e.target.value })}
+                  placeholder="Verify existing password..."
+                  className="w-full bg-[#0a0a0e] border border-white/[0.08] focus:border-[#00a3ff]/40 rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-600 outline-none font-mono"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-mono uppercase tracking-widest text-gray-400">
+                  New Password
+                </label>
+                <input
+                  type="password"
+                  value={profile.newPassword}
+                  onChange={(e) => setProfile({ ...profile, newPassword: e.target.value })}
+                  placeholder="Min 8 chars, mixed case & symbol..."
+                  className="w-full bg-[#0a0a0e] border border-white/[0.08] focus:border-[#00a3ff]/40 rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-600 outline-none font-mono"
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-mono uppercase tracking-widest text-gray-400">
+                  Confirm New Password
+                </label>
+                <input
+                  type="password"
+                  value={profile.confirmPassword}
+                  onChange={(e) => setProfile({ ...profile, confirmPassword: e.target.value })}
+                  placeholder="Repeat new password..."
+                  className="w-full bg-[#0a0a0e] border border-white/[0.08] focus:border-[#00a3ff]/40 rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-600 outline-none font-mono"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Action Row */}
+          <div className="flex items-center justify-between pt-4 border-t border-white/[0.06]">
+            <p className="text-[11px] font-mono text-gray-500">
+              Changes are immediately applied to your sovereign member node.
+            </p>
+
+            <button
+              type="submit"
+              disabled={profileSaving}
+              className="px-6 py-3 rounded-xl bg-white text-black font-bold text-xs hover:bg-gray-200 transition-all flex items-center gap-2 shadow-lg disabled:opacity-50 cursor-pointer"
+            >
+              {profileSaving ? (
+                <>
+                  <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  <span>Saving Updates...</span>
+                </>
+              ) : (
+                <>
+                  <Save className="w-3.5 h-3.5" />
+                  <span>Save Profile</span>
+                </>
+              )}
+            </button>
+          </div>
+        </form>
       </section>
     </div>
   );

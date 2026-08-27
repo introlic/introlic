@@ -56,24 +56,35 @@ export async function POST(req: Request) {
     const { name, username, email, password, role, status, gender, dateOfBirth, socialHandle } = body;
 
     // 1. Validate required fields
-    if (!name || !username || !email || !password) {
-      return NextResponse.json({ error: "Missing required fields (name, username, email, password)" }, { status: 400 });
+    const isMember = role === "member";
+    if (!name || !username || !password) {
+      return NextResponse.json({ error: "Name, username, and password are required" }, { status: 400 });
     }
+
+    if (!isMember && (!email || email.trim().length === 0)) {
+      return NextResponse.json({ error: "Email address is required for this role" }, { status: 400 });
+    }
+
+    const sanitizedUsername = username.trim().toLowerCase();
+    
+    // Default email for members if not specified
+    const rawEmail = (email && email.trim().length > 0)
+      ? email.trim().toLowerCase()
+      : `${sanitizedUsername}@member.introlic.in`;
+
+    const sanitizedEmail = rawEmail;
 
     // 2. Length validation
     if (name.length > 100) return NextResponse.json({ error: "Name must be 100 characters or less" }, { status: 400 });
     if (username.length > 50) return NextResponse.json({ error: "Username must be 50 characters or less" }, { status: 400 });
-    if (email.length > 255) return NextResponse.json({ error: "Email must be 255 characters or less" }, { status: 400 });
+    if (sanitizedEmail.length > 255) return NextResponse.json({ error: "Email must be 255 characters or less" }, { status: 400 });
     if (password.length > 72) return NextResponse.json({ error: "Password must be 72 characters or less" }, { status: 400 });
     if (socialHandle && socialHandle.length > 255) return NextResponse.json({ error: "Social handle must be 255 characters or less" }, { status: 400 });
 
     // 3. Formats validation
-    if (!validateEmail(email)) return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
-    if (!validateUsername(username)) return NextResponse.json({ error: "Username can only contain alphanumeric characters, periods, or underscores (3-50 chars)" }, { status: 400 });
+    if (!validateEmail(sanitizedEmail)) return NextResponse.json({ error: "Invalid email format" }, { status: 400 });
+    if (!validateUsername(sanitizedUsername)) return NextResponse.json({ error: "Username can only contain alphanumeric characters, periods, or underscores (3-50 chars)" }, { status: 400 });
     if (!validatePasswordStrength(password)) return NextResponse.json({ error: "Password must be at least 8 chars with an uppercase, lowercase, number, and special character" }, { status: 400 });
-
-    const sanitizedUsername = username.trim().toLowerCase();
-    const sanitizedEmail = email.trim().toLowerCase();
 
     // 4. Check uniqueness
     const existing = await db.query.users.findFirst({
