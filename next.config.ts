@@ -57,20 +57,9 @@ const nextConfig: NextConfig = {
       ],
     },
   },
-  // Image optimization: serve WebP, define responsive breakpoints
+  // Image optimization: Sharp already compresses and optimizes uploads to WebP on upload
   images: {
-    formats: ["image/webp"],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
-    imageSizes: [16, 32, 64, 128, 256, 384, 512],
-    minimumCacheTTL: 86400, // 24 hours
-    remotePatterns: [],
-    // Allow locally-served uploads (thumbnails saved to public/uploads/...)
-    localPatterns: [
-      {
-        pathname: '/uploads/**',
-        search: '',
-      },
-    ],
+    unoptimized: true,
   },
   // Simple indicator setting for Next.js 15+ compatibility
   devIndicators: false,

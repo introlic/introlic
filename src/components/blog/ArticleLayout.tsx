@@ -372,12 +372,10 @@ export default function ArticleLayout({ slug }: ArticleLayoutProps) {
         <div className="relative h-64 md:h-[480px] rounded-[32px] overflow-hidden border border-white/5 shadow-2xl group">
           <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0),rgba(255,255,255,0)_50%,rgba(0,163,255,0.02)_50%,rgba(0,163,255,0.02))] bg-[size:100%_4px] pointer-events-none opacity-30 z-10" />
           {post.thumbnailUrl || post.thumbnail_url ? (
-            <NextImage
+            <img
               src={post.thumbnailUrl || post.thumbnail_url || ""}
               alt={post.title}
-              fill
-              className="object-cover group-hover:scale-[1.02] transition-transform duration-1000 ease-out"
-              priority
+              className="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-1000 ease-out"
             />
           ) : (
             <Cover />
@@ -430,11 +428,10 @@ export default function ArticleLayout({ slug }: ArticleLayoutProps) {
                         {/* Avatar */}
                         {matchedAuthor?.avatar ? (
                           <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-white/10 shrink-0">
-                            <NextImage
+                            <img
                               src={matchedAuthor.avatar}
                               alt={contrib.name}
-                              fill
-                              className="object-cover"
+                              className="w-full h-full object-cover"
                             />
                           </div>
                         ) : (

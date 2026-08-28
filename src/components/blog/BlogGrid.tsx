@@ -424,7 +424,7 @@ function FeaturedCard({ post }: { post: BlogPost & { thumbnailUrl?: string; thum
         {/* LEFT: Cover art or thumbnail */}
         <div className="relative overflow-hidden aspect-[16/9] sm:aspect-[21/9] lg:aspect-auto lg:min-h-0 border-b lg:border-b-0 lg:border-r border-white/[0.06] group-hover:border-[#00a3ff]/10 transition-colors duration-700">
           {thumbUrl ? (
-            <NextImage src={thumbUrl} alt={post.title} fill className="object-cover group-hover:scale-[1.04] transition-transform duration-1000 ease-out" priority />
+            <img src={thumbUrl} alt={post.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-1000 ease-out" />
           ) : (
             <div className="absolute inset-0 group-hover:scale-[1.04] transition-transform duration-1000 ease-out">
               <Cover />
@@ -520,7 +520,7 @@ function ArticleCard({ post, index }: { post: BlogPost & { thumbnailUrl?: string
         {/* Cover image area */}
         <div className="relative h-44 overflow-hidden shrink-0">
           {thumbUrl ? (
-            <NextImage src={thumbUrl} alt={post.title} fill className="object-cover group-hover:scale-[1.05] transition-transform duration-700 ease-out" />
+            <img src={thumbUrl} alt={post.title} className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.05] transition-transform duration-700 ease-out" />
           ) : (
             <div className="absolute inset-0 group-hover:scale-[1.05] transition-transform duration-700 ease-out">
               <Cover />
