@@ -159,6 +159,36 @@ export default function ArticleLayout({ slug }: ArticleLayoutProps) {
     }
   };
 
+  // ── All useMemo/derived values MUST be declared before any early returns ──
+  // (Rules of Hooks: hooks must be called unconditionally on every render)
+
+  const postAuthorObj = useMemo(() => {
+    if (!post || !post.author) return null;
+    const authorName = post.author.toLowerCase().replace(/\s+/g, ' ').trim();
+    return authorsList.find((a: any) => a.name.toLowerCase().replace(/\s+/g, ' ').trim() === authorName);
+  }, [post, authorsList]);
+
+  const authorAgeAndDOB = useMemo(() => {
+    if (!postAuthorObj || !postAuthorObj.dateOfBirth) return "";
+    const d = new Date(postAuthorObj.dateOfBirth);
+    if (isNaN(d.getTime())) return "";
+    const today = new Date();
+    let age = today.getFullYear() - d.getFullYear();
+    const m = today.getMonth() - d.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < d.getDate())) age--;
+    const formattedDate = d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+    return `${formattedDate} (Age ${age})`;
+  }, [postAuthorObj]);
+
+  const relatedPosts = useMemo(() => {
+    if (!post) return [];
+    const related = allBlogPosts.filter(p => p.id !== post.id && p.category === post.category).slice(0, 2);
+    const fallback = allBlogPosts.filter(p => p.id !== post.id).slice(0, 2);
+    return related.length > 0 ? related : fallback;
+  }, [post, allBlogPosts]);
+
+  // ── Early returns (after all hooks) ──
+
   if (!isMounted) {
     return (
       <main className="min-h-screen bg-[#020202] flex flex-col items-center justify-center p-6 text-center text-white font-sans">
@@ -189,39 +219,6 @@ export default function ArticleLayout({ slug }: ArticleLayoutProps) {
   }
 
   const Cover = post.cover;
-  const postAuthorObj = useMemo(() => {
-    if (!post || !post.author) return null;
-    const authorName = post.author.toLowerCase().replace(/\s+/g, ' ').trim();
-    return authorsList.find(a => a.name.toLowerCase().replace(/\s+/g, ' ').trim() === authorName);
-  }, [post, authorsList]);
-
-  const authorAgeAndDOB = useMemo(() => {
-    if (!postAuthorObj || !postAuthorObj.dateOfBirth) return "";
-    
-    // Parse DOB string
-    const d = new Date(postAuthorObj.dateOfBirth);
-    if (isNaN(d.getTime())) return "";
-
-    // Age calculation
-    const today = new Date();
-    let age = today.getFullYear() - d.getFullYear();
-    const m = today.getMonth() - d.getMonth();
-    if (m < 0 || (m === 0 && today.getDate() < d.getDate())) {
-      age--;
-    }
-
-    // Format birth date
-    const formattedDate = d.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-
-    return `${formattedDate} (Age ${age})`;
-  }, [postAuthorObj]);
-  const related = allBlogPosts.filter(p => p.id !== post.id && p.category === post.category).slice(0, 2);
-  const relatedFallback = allBlogPosts.filter(p => p.id !== post.id).slice(0, 2);
-  const relatedPosts = related.length > 0 ? related : relatedFallback;
 
   // Parse body into premium visual segments
   const segments = post.body.trim().split('\n\n').map((segment, i) => {
